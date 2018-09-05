@@ -21,7 +21,7 @@ class HealthCheckPageTest extends SlimTestCase
      * @test
      * @runInSeparateProcess
      */
-    public function callsHealthCheckPage_WithBadConnectionData_Returns200OK()
+    public function callsHealthCheckPage_WithBadConnectionData_Returns500()
     {
         $this->disableSlimErrorHandler(false);
         putenv('DB_USER=""');
