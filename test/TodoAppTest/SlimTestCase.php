@@ -19,15 +19,52 @@ class SlimTestCase extends TestCase
     /**
      * @var App
      */
+    private static $globalApp = null;
+
+    /**
+     * @var App
+     */
     private $app;
+
+    /**
+     * @var bool
+     */
+    private $slimErrorHandlerDisabled = true;
+
+    /**
+     * @param App $app
+     * @return void
+     */
+    public static function setGlobalApp(App $app) {
+        self::$globalApp = $app;
+    }
+
+    /**
+     * @return App
+     */
+    private static function getGlobalApp() {
+        if(null === self::$globalApp) {
+            $message = sprintf(
+                'Global Slim Instance is not set, use the %s method to set it up',
+                __CLASS__ . '::setGlobalApp'
+            );
+            throw new \RuntimeException($message);
+        }
+        return self::$globalApp;
+    }
+
+    protected function disableSlimErrorHandler($disable)
+    {
+        $this->slimErrorHandlerDisabled = $disable;
+    }
 
     /**
      * @return App
      */
     protected function getApp(): App
     {
-        if(null === $this->app) {
-            $this->app = require APP_ROOT . '/config/app.php';
+        if (null === $this->app) {
+            $this->app = self::getGlobalApp();
         }
         return $this->app;
     }
@@ -81,8 +118,10 @@ class SlimTestCase extends TestCase
         }
         $app = $this->getApp();
         $container = $app->getContainer();
-        unset($container['errorHandler']);
-        unset($container['phpErrorHandler']);
+        if ($this->slimErrorHandlerDisabled) {
+            unset($container['errorHandler']);
+            unset($container['phpErrorHandler']);
+        }
         return $app->process($request, new Response());
     }
 }
