@@ -3,5 +3,5 @@
 return [
     'settings' => [
         'displayErrorDetails' => true,
-    ],
+    ]
 ];

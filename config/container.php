@@ -3,7 +3,7 @@
 use Slim\Container;
 
 return (function() {
-    $config = include __DIR__ . '/config.php';
+    $config = require __DIR__ . '/config.php';
 
     $container = new Container($config);
 
