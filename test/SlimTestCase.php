@@ -3,6 +3,7 @@
 namespace Test;
 
 use PDO;
+use PDOStatement;
 use PHPUnit\Framework\TestCase;
 use Slim\App;
 use Slim\Http\Environment;
@@ -16,18 +17,26 @@ use Slim\Http\Response;
 class SlimTestCase extends TestCase
 {
     /**
+     * @var App
+     */
+    private $app;
+
+    /**
      * @return App
      */
-    public function getApp(): App
+    protected function getApp(): App
     {
-        return require APP_ROOT . '/config/app.php';
+        if(null === $this->app) {
+            $this->app = require APP_ROOT . '/config/app.php';
+        }
+        return $this->app;
     }
 
     /**
      * @param string $name
      * @return mixed
      */
-    public function getService($name)
+    protected function getService($name)
     {
         return $this->getApp()->getContainer()->get($name);
     }
@@ -36,9 +45,18 @@ class SlimTestCase extends TestCase
      * @param string $name [optional] default: PDO
      * @return PDO
      */
-    public function getPDO($name = 'PDO'): PDO
+    protected function getPDO($name = 'PDO'): PDO
     {
         return $this->getService($name);
+    }
+
+    /**
+     * @param string $table
+     * @return bool|PDOStatement
+     */
+    protected function truncateTable($table)
+    {
+        return $this->getPDO()->query('TRUNCATE TABLE ' . $table);
     }
 
     /**
@@ -49,7 +67,7 @@ class SlimTestCase extends TestCase
      * @throws \Slim\Exception\MethodNotAllowedException
      * @throws \Slim\Exception\NotFoundException
      */
-    public function runApp($requestMethod, $requestUri, $requestData = null)
+    protected function runApp($requestMethod, $requestUri, array $requestData = null)
     {
         $environment = Environment::mock(
             [
