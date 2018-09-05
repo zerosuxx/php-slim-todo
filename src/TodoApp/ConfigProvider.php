@@ -15,7 +15,7 @@ class ConfigProvider
     public function __construct(App $app)
     {
         $this->routes($app);
-        $this->dependecies($app->getContainer());
+        $this->dependencies($app->getContainer());
     }
 
     public function routes(App $app)
@@ -23,11 +23,16 @@ class ConfigProvider
         $app->get('/healthcheck', HealthCheckAction::class);
     }
 
-    public function dependecies(ContainerInterface $container)
+    public function dependencies(ContainerInterface $container)
     {
         $container['PDO'] = function () {
             $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8mb4', getenv('DB_HOST'), getenv('DB_NAME'));
-            return new PDO($dsn, getenv('DB_USER'), getenv('DB_PASSWORD'));
+            $pdo = new PDO($dsn, getenv('DB_USER'), getenv('DB_PASSWORD'));
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $pdo;
+        };
+        $container[HealthCheckAction::class] = function (ContainerInterface $container) {
+            return new HealthCheckAction($container->get('PDO'));
         };
     }
 }

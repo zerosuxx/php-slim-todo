@@ -14,5 +14,6 @@ class HealthCheckPageTest extends SlimTestCase
     {
         $response = $this->runApp('GET', '/healthcheck');
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('OK', (string)$response->getBody());
     }
 }
