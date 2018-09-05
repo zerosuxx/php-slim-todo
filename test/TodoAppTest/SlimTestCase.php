@@ -35,15 +35,17 @@ class SlimTestCase extends TestCase
      * @param App $app
      * @return void
      */
-    public static function setGlobalApp(App $app) {
+    public static function setGlobalApp(App $app)
+    {
         self::$globalApp = $app;
     }
 
     /**
      * @return App
      */
-    private static function getGlobalApp() {
-        if(null === self::$globalApp) {
+    private static function getGlobalApp()
+    {
+        if (null === self::$globalApp) {
             $message = sprintf(
                 'Global Slim Instance is not set, use the %s method to set it up',
                 __CLASS__ . '::setGlobalApp'
