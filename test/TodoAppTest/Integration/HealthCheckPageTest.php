@@ -1,11 +1,11 @@
 <?php
 
-use Test\SlimTestCase;
+namespace Test\TodoAppTest;
 
 /**
  * Class HealthCheckPageTest
  */
-class HealthCheckPageTest extends SlimTestCase
+class HealthCheckPageTest extends TodoAppTestCase
 {
     /**
      * @test

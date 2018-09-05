@@ -14,13 +14,14 @@ class ConfigProvider
 {
     public function __construct(App $app)
     {
-        $this->routes($app);
+        $this->config($app->getContainer());
         $this->dependencies($app->getContainer());
+        $this->routes($app);
     }
 
-    public function routes(App $app)
+    public function config(ContainerInterface $container)
     {
-        $app->get('/healthcheck', HealthCheckAction::class);
+        $container['settings']['displayErrorDetails'] = true;
     }
 
     public function dependencies(ContainerInterface $container)
@@ -34,5 +35,10 @@ class ConfigProvider
         $container[HealthCheckAction::class] = function (ContainerInterface $container) {
             return new HealthCheckAction($container->get('PDO'));
         };
+    }
+
+    public function routes(App $app)
+    {
+        $app->get('/healthcheck', HealthCheckAction::class);
     }
 }

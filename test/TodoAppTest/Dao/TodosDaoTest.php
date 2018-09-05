@@ -1,13 +1,14 @@
 <?php
 
-use Test\SlimTestCase;
+namespace Test\TodoAppTest;
+
 use TodoApp\Dao\TodosDao;
 use TodoApp\Entity\Todo;
 
 /**
  * Class TodosDaoTest
  */
-class TodosDaoTest extends SlimTestCase
+class TodosDaoTest extends TodoAppTestCase
 {
     /**
      * @test

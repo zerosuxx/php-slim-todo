@@ -24,12 +24,8 @@ class HealthCheckAction
 
     public function __invoke(Request $request, Response $response)
     {
-        try {
-            $this->pdo->query('SELECT 1');
-            $response->getBody()->write('OK');
-            return $response->withStatus(200);
-        } catch (\PDOException $ex) {
-            return $response->withStatus(500);
-        }
+        $this->pdo->query('SELECT 1');
+        $response->getBody()->write('OK');
+        return $response->withStatus(200);
     }
 }

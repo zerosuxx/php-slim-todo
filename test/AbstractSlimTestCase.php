@@ -11,15 +11,11 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 /**
- * Class SlimTestCase
+ * Class AbstractSlimTestCase
  * @package Test
  */
-class SlimTestCase extends TestCase
+abstract class AbstractSlimTestCase extends TestCase
 {
-    /**
-     * @var App
-     */
-    private static $globalApp = null;
 
     /**
      * @var App
@@ -32,29 +28,13 @@ class SlimTestCase extends TestCase
     private $slimErrorHandlerDisabled = true;
 
     /**
-     * @param App $app
-     * @return void
-     */
-    public static function setGlobalApp(App $app)
-    {
-        self::$globalApp = $app;
-    }
-
-    /**
      * @return App
      */
-    private static function getGlobalApp()
-    {
-        if (null === self::$globalApp) {
-            $message = sprintf(
-                'Global Slim Instance is not set, use the %s method to set it up',
-                __CLASS__ . '::setGlobalApp'
-            );
-            throw new \RuntimeException($message);
-        }
-        return self::$globalApp;
-    }
+    abstract protected function buildApp(): App;
 
+    /**
+     * @param $disable
+     */
     protected function disableSlimErrorHandler($disable)
     {
         $this->slimErrorHandlerDisabled = $disable;
@@ -66,7 +46,7 @@ class SlimTestCase extends TestCase
     protected function getApp(): App
     {
         if (null === $this->app) {
-            $this->app = self::getGlobalApp();
+            $this->app = $this->buildApp();
         }
         return $this->app;
     }
