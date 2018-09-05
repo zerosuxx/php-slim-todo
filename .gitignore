@@ -1,6 +1,6 @@
 .idea/
 vendor/
 coverage/
-environment/mysql/
+config/environment/mysql/
 .DS_Store
 clover.xml

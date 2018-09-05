@@ -5,8 +5,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "root"
     volumes:
-      - ./environment/mysql:/var/lib/mysql
-      - ./environment/init_sql:/docker-entrypoint-initdb.d
+      - ./config/environment/mysql:/var/lib/mysql
+      - ./config/environment/init_sql:/docker-entrypoint-initdb.d
     networks:
       todo_app-net:
         aliases:
@@ -18,7 +18,8 @@ services:
     ports:
       - '8080:80'
     volumes:
-      - ${DOCUMENT_ROOT-./}:/var/www/html
+      - ./:/var/www/
+      - ./public:/var/www/html
     networks:
       - todo_app-net
   test:
