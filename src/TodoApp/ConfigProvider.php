@@ -12,7 +12,7 @@ use TodoApp\Action\HealthCheckAction;
  */
 class ConfigProvider
 {
-    public function __construct(App $app)
+    public function __invoke(App $app)
     {
         $this->config($app->getContainer());
         $this->dependencies($app->getContainer());
