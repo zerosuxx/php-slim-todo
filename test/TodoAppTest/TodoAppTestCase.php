@@ -3,20 +3,22 @@
 namespace Test\TodoAppTest;
 
 use Slim\App;
+use SlimSkeleton\AppBuilder;
+use Test\AbstractSlimTestCase;
 use TodoApp\ConfigProvider;
 
 /**
  * Class TodoAppTestCase
  */
-class TodoAppTestCase extends \Test\AbstractSlimTestCase
+class TodoAppTestCase extends AbstractSlimTestCase
 {
     /**
      * @return App
      */
     protected function buildApp(): App
     {
-        $app = new App();
-        new ConfigProvider($app);
-        return $app;
+        $appBuilder = new AppBuilder();
+        $appBuilder->addProvider(new ConfigProvider());
+        return $appBuilder->buildApp();
     }
 }
