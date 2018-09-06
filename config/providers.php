@@ -1,8 +1,8 @@
 <?php
 
-use Slim\App;
+use SlimSkeleton\AppBuilder;
 use TodoApp\ConfigProvider;
 
-return function(App $app) {
-    new ConfigProvider($app);
+return function(AppBuilder $appBuilder) {
+    $appBuilder->addProvider(new ConfigProvider());
 };
