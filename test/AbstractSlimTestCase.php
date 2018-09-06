@@ -9,6 +9,7 @@ use Slim\App;
 use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use SlimSkeleton\AppBuilder;
 
 /**
  * Class AbstractSlimTestCase
@@ -28,9 +29,10 @@ abstract class AbstractSlimTestCase extends TestCase
     private $slimErrorHandlerDisabled = true;
 
     /**
-     * @return App
+     * @param AppBuilder $appBuilder
+     * @return void
      */
-    abstract protected function buildApp(): App;
+    abstract protected function addProvider(AppBuilder $appBuilder);
 
     /**
      * @param $disable
@@ -46,7 +48,9 @@ abstract class AbstractSlimTestCase extends TestCase
     protected function getApp(): App
     {
         if (null === $this->app) {
-            $this->app = $this->buildApp();
+            $appBuilder = new AppBuilder();
+            $this->addProvider($appBuilder);
+            $this->app = $appBuilder->buildApp();
         }
         return $this->app;
     }
