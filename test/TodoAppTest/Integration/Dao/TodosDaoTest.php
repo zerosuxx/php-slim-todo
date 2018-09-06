@@ -1,7 +1,8 @@
 <?php
 
-namespace Test\TodoAppTest;
+namespace Test\TodoAppTest\Integration;
 
+use Test\TodoAppTest\TodoAppTestCase;
 use TodoApp\Dao\TodosDao;
 use TodoApp\Entity\Todo;
 
