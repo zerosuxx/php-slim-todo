@@ -6,11 +6,11 @@
 Készíts egy ToDo kezelő app-ot, mely az alábbi funkciókkal rendelkezik:
 
 
-ToDo hozzáadás
-ToDo módosítás
-ToDo törlés
-ToDo teljesítése
-ToDo lista
+- ToDo hozzáadás
+- ToDo módosítás
+- ToDo törlés
+- ToDo teljesítése
+- ToDo lista
 
 Egy ToDo paraméterei:
 ```
