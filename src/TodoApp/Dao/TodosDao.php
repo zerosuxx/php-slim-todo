@@ -40,7 +40,7 @@ class TodosDao
      */
     public function getTodos()
     {
-        $statement = $this->pdo->query('SELECT id, name, description, status, due_at FROM todos');
+        $statement = $this->pdo->query("SELECT id, name, description, status, due_at FROM todos WHERE status = 'incomplete'");
         $todos = [];
         while ($todoData = $statement->fetch(PDO::FETCH_ASSOC)) {
             $todos[] = $this->createTodoFromArray($todoData);

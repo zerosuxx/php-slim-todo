@@ -70,9 +70,9 @@ class TodosDaoTest extends TodoAppTestCase
     public function getTodos_GivenExistingRecords_ReturnsTodos()
     {
         $records = [
-            new Todo('name 1', 'desc 1', 'incomplete',  new \DateTime('2018-09-07 10:00:00')),
-            new Todo('name 2', 'desc 2', 'incomplete',  new \DateTime('2018-09-07 10:00:00')),
-            new Todo('name 3', 'desc 3', 'incomplete',  new \DateTime('2018-09-07 10:00:00'))
+            new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-07 10:00:00')),
+            new Todo('name 2', 'desc 2', 'incomplete', new \DateTime('2018-09-07 10:00:00')),
+            new Todo('name 3', 'desc 3', 'incomplete', new \DateTime('2018-09-07 10:00:00'))
         ];
 
         $savedRecords = [];
@@ -84,4 +84,29 @@ class TodosDaoTest extends TodoAppTestCase
 
         $this->assertEquals($todosFromDb, $savedRecords);
     }
+
+    /**
+     * @test
+     */
+    public function getTodos_GivenExistingRecords_ReturnsInCompletedTodos()
+    {
+        $records = [
+            new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-07 10:00:00')),
+            new Todo('name 2', 'desc 2', 'incomplete', new \DateTime('2018-09-07 10:00:00')),
+            new Todo('name 3', 'desc 3', 'complete', new \DateTime('2018-09-07 10:00:00'))
+        ];
+
+        $savedRecords = [];
+        foreach ($records as $record) {
+            $savedRecords[] = $this->dao->saveTodo($record);
+        }
+
+        $todosFromDb = $this->dao->getTodos();
+
+        $this->assertCount(2, $todosFromDb);
+        $this->assertEquals('incomplete', $savedRecords[0]->getStatus());
+        $this->assertEquals('incomplete', $savedRecords[1]->getStatus());
+    }
+
+
 }
