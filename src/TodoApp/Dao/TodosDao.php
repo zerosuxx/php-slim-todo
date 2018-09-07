@@ -40,4 +40,19 @@ class TodosDao
             $todoData['id']
         );
     }
+
+    public function saveTodo(Todo $todo)
+    {
+        $statement = $this->pdo->prepare(
+            "INSERT INTO todos (name, description, status, due_at) VALUES (:name, :description, :status, :due_at)"
+        );
+        $statement->execute([
+            'name' => $todo->getName(),
+            'description' => $todo->getDescription(),
+            'status' => $todo->getStatus(),
+            'due_at' => $todo->getDueAt()->format('Y-m-d H:i:s'),
+        ]);
+        $id = $this->pdo->lastInsertId();
+        return new Todo($todo->getName(), $todo->getDescription(), $todo->getStatus(), $todo->getDueAt(), $id);
+    }
 }

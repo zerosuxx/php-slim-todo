@@ -40,4 +40,23 @@ class TodosDaoTest extends TodoAppTestCase
         $dao = new TodosDao($this->getPDO());
         $dao->getTodo(999);
     }
+
+    /**
+     * @test
+     */
+    public function saveTodo_EmptyDatabase_ReturnsInsertedTodo()
+    {
+        $this->truncateTable('todos');
+
+        $todo = new Todo('name', 'desc', 'incomplete', new \DateTime('2018-09-07 10:00:00'));
+        $dao = new TodosDao($this->getPDO());
+
+        $savedTodo = $dao->saveTodo($todo);
+
+        $todoFromDb = $dao->getTodo(1);
+
+        $this->assertInstanceOf(Todo::class, $savedTodo);
+        $this->assertEquals(1, $savedTodo->getId());
+        $this->assertEquals($todoFromDb, $savedTodo);
+    }
 }
