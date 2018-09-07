@@ -22,6 +22,10 @@ class TodosDao
         $this->pdo = $pdo;
     }
 
+    /**
+     * @param int $id
+     * @return Todo
+     */
     public function getTodo(int $id): Todo
     {
         $statement = $this->pdo->prepare('SELECT id, name, description, status, due_at FROM todos WHERE id = :id');
@@ -48,6 +52,10 @@ class TodosDao
         return $todos;
     }
 
+    /**
+     * @param Todo $todo
+     * @return Todo
+     */
     public function saveTodo(Todo $todo): Todo
     {
         $statement = $this->pdo->prepare(
@@ -60,15 +68,13 @@ class TodosDao
             'due_at' => $todo->getDueAt()->format('Y-m-d H:i:s'),
         ]);
         $id = $this->pdo->lastInsertId();
-        return new Todo(
-            $todo->getName(),
-            $todo->getDescription(),
-            $todo->getStatus(),
-            $todo->getDueAt(),
-            $id
-        );
+        return $this->createTodoWithIdFromTodo($todo, $id);
     }
 
+    /**
+     * @param array $todoData
+     * @return Todo
+     */
     private function createTodoFromArray(array $todoData): Todo
     {
         return new Todo(
@@ -77,6 +83,22 @@ class TodosDao
             $todoData['status'],
             new \DateTime($todoData['due_at']),
             $todoData['id']
+        );
+    }
+
+    /**
+     * @param Todo $todo
+     * @param int $id
+     * @return Todo
+     */
+    private function createTodoWithIdFromTodo(Todo $todo, int $id): Todo
+    {
+        return new Todo(
+            $todo->getName(),
+            $todo->getDescription(),
+            $todo->getStatus(),
+            $todo->getDueAt(),
+            $id
         );
     }
 }
