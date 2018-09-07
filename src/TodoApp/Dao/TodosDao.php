@@ -114,4 +114,13 @@ class TodosDao
         }
         return $todoData;
     }
+
+    public function completeTodo(int $id)
+    {
+        $todo = $this->getTodo($id);
+        $todoArray = $this->createTodoArrayFromTodo($todo);
+        $todoArray['status'] = 'complete';
+        $modifiedTodo = $this->createTodoFromArray($todoArray);
+        return $this->updateTodo($modifiedTodo);
+    }
 }

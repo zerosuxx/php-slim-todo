@@ -130,5 +130,21 @@ class TodosDaoTest extends TodoAppTestCase
         $this->assertEquals(new \DateTime('2019-09-09 10:00:00'), $todoFromDb->getDueAt());
     }
 
+    /**
+     * @test
+     */
+    public function updateTodoStatus_GivenExistingTodo_UpdatesTodoStatus()
+    {
+        $todoToSave = new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-09 10:00:00'));
+
+        $this->dao->saveTodo($todoToSave);
+
+        $updated = $this->dao->completeTodo(1);
+
+        $todoFromDb = $this->dao->getTodo(1);
+
+        $this->assertTrue($updated);
+        $this->assertEquals('complete', $todoFromDb->getStatus());
+    }
 
 }
