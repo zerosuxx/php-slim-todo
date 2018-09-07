@@ -10,10 +10,15 @@ class Todo
 {
     private $name;
 
-    public function __construct(string $name)
-    {
+    /**
+     * @var string
+     */
+    private $description;
 
+    public function __construct(string $name, string $description)
+    {
         $this->name = $name;
+        $this->description = $description;
     }
 
     /**
@@ -22,6 +27,14 @@ class Todo
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 
 
