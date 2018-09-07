@@ -52,4 +52,15 @@ class TodoTest extends TestCase
         $this->assertEquals($dueAt, $todo->getDueAt());
     }
 
+    /**
+     * @test
+     */
+    public function getId_TodoExistsWithId_ReturnsId()
+    {
+        $id = 1;
+        $todo = new Todo('', '', '', new DateTime(), $id);
+
+        $this->assertEquals($id, $todo->getId());
+    }
+
 }

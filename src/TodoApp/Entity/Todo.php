@@ -30,12 +30,18 @@ class Todo
      */
     private $dueAt;
 
-    public function __construct(string $name, string $description, string $status, DateTime $dueAt)
+    /**
+     * @var int
+     */
+    private $id;
+
+    public function __construct(string $name, string $description, string $status, DateTime $dueAt, int $id = null)
     {
         $this->name = $name;
         $this->description = $description;
         $this->status = $status;
         $this->dueAt = $dueAt;
+        $this->id = $id;
     }
 
     /**
@@ -68,6 +74,14 @@ class Todo
     public function getDueAt(): DateTime
     {
         return $this->dueAt;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
     }
 
 }
