@@ -34,7 +34,7 @@ class TodosDao
         ]);
         $todoData = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if(!$todoData) {
+        if (!$todoData) {
             throw new \InvalidArgumentException('Todo not found');
         }
 
@@ -100,17 +100,18 @@ class TodosDao
      * @param Todo $todo
      * @return array
      */
-    private function createTodoArrayFromTodo(Todo $todo) {
-        $data = [
+    private function createTodoArrayFromTodo(Todo $todo)
+    {
+        $todoData = [
             'name' => $todo->getName(),
             'description' => $todo->getDescription(),
             'status' => $todo->getStatus(),
             'due_at' => $todo->getDueAt()->format('Y-m-d H:i:s')
         ];
         $id = $todo->getId();
-        if($id) {
-            $data['id'] = $id;
+        if ($id) {
+            $todoData['id'] = $id;
         }
-        return $data;
+        return $todoData;
     }
 }
