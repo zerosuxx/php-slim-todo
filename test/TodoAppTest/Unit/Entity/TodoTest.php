@@ -28,4 +28,15 @@ class TodoTest extends TestCase
 
         $this->assertEquals($description, $todo->getDescription());
     }
+
+    /**
+     * @test
+     */
+    public function getStatus_TodoExistsWithStatus_ReturnsStatus()
+    {
+        $status = 'complete';
+        $todo = new Todo('', '', $status);
+
+        $this->assertEquals($status, $todo->getStatus());
+    }
 }

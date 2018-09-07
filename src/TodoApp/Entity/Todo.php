@@ -14,11 +14,16 @@ class Todo
      * @var string
      */
     private $description;
+    /**
+     * @var string
+     */
+    private $status;
 
-    public function __construct(string $name, string $description)
+    public function __construct(string $name, string $description, string $status)
     {
         $this->name = $name;
         $this->description = $description;
+        $this->status = $status;
     }
 
     /**
@@ -35,6 +40,14 @@ class Todo
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
     }
 
 
