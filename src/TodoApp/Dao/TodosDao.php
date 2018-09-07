@@ -32,13 +32,7 @@ class TodosDao
             throw new \InvalidArgumentException('Todo not found');
         }
 
-        return new Todo(
-            $todoData['name'],
-            $todoData['description'],
-            $todoData['status'],
-            new \DateTime($todoData['due_at']),
-            $todoData['id']
-        );
+        return $this->createTodoFromArray($todoData);
     }
 
     /**
@@ -49,18 +43,12 @@ class TodosDao
         $statement = $this->pdo->query('SELECT id, name, description, status, due_at FROM todos');
         $todos = [];
         while ($todoData = $statement->fetch(PDO::FETCH_ASSOC)) {
-            $todos[] = new Todo(
-                $todoData['name'],
-                $todoData['description'],
-                $todoData['status'],
-                new \DateTime($todoData['due_at']),
-                $todoData['id']
-            );
+            $todos[] = $this->createTodoFromArray($todoData);
         }
         return $todos;
     }
 
-    public function saveTodo(Todo $todo)
+    public function saveTodo(Todo $todo): Todo
     {
         $statement = $this->pdo->prepare(
             "INSERT INTO todos (name, description, status, due_at) VALUES (:name, :description, :status, :due_at)"
@@ -72,6 +60,23 @@ class TodosDao
             'due_at' => $todo->getDueAt()->format('Y-m-d H:i:s'),
         ]);
         $id = $this->pdo->lastInsertId();
-        return new Todo($todo->getName(), $todo->getDescription(), $todo->getStatus(), $todo->getDueAt(), $id);
+        return new Todo(
+            $todo->getName(),
+            $todo->getDescription(),
+            $todo->getStatus(),
+            $todo->getDueAt(),
+            $id
+        );
+    }
+
+    private function createTodoFromArray(array $todoData): Todo
+    {
+        return new Todo(
+            $todoData['name'],
+            $todoData['description'],
+            $todoData['status'],
+            new \DateTime($todoData['due_at']),
+            $todoData['id']
+        );
     }
 }
