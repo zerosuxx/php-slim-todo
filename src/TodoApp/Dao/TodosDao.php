@@ -41,6 +41,25 @@ class TodosDao
         );
     }
 
+    /**
+     * @return Todo[]
+     */
+    public function getTodos()
+    {
+        $statement = $this->pdo->query('SELECT id, name, description, status, due_at FROM todos');
+        $todos = [];
+        while ($todoData = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $todos[] = new Todo(
+                $todoData['name'],
+                $todoData['description'],
+                $todoData['status'],
+                new \DateTime($todoData['due_at']),
+                $todoData['id']
+            );
+        }
+        return $todos;
+    }
+
     public function saveTodo(Todo $todo)
     {
         $statement = $this->pdo->prepare(
