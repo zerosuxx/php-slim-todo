@@ -111,24 +111,23 @@ class TodosDaoTest extends TodoAppTestCase
     /**
      * @test
      */
-    public function getTodos_GivenExistingRecords_ReturnsOrderedTodos()
+    public function updateTodo_GivenExistingTodo_UpdatesTodo()
     {
-        $records = [
-            new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-09 10:00:00')),
-            new Todo('name 2', 'desc 2', 'incomplete', new \DateTime('2018-09-07 10:00:00')),
-            new Todo('name 3', 'desc 3', 'incomplete', new \DateTime('2018-09-08 10:00:00'))
-        ];
+        $todoToSave = new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-09 10:00:00'));
 
-        $savedRecords = [];
-        foreach ($records as $record) {
-            $savedRecords[] = $this->dao->saveTodo($record);
-        }
+        $this->dao->saveTodo($todoToSave);
 
-        $todosFromDb = $this->dao->getTodos();
+        $todoToModify = new Todo('name 2', 'desc 2', 'complete', new \DateTime('2019-09-09 10:00:00'), 1);
 
-        $this->assertEquals('name 2', $todosFromDb[0]->getName());
-        $this->assertEquals('name 3', $todosFromDb[1]->getName());
-        $this->assertEquals('name 1', $todosFromDb[2]->getName());
+        $updated = $this->dao->updateTodo($todoToModify);
+
+        $todoFromDb = $this->dao->getTodo(1);
+
+        $this->assertTrue($updated);
+        $this->assertEquals('name 2', $todoFromDb->getName());
+        $this->assertEquals('desc 2', $todoFromDb->getDescription());
+        $this->assertEquals('complete', $todoFromDb->getStatus());
+        $this->assertEquals(new \DateTime('2019-09-09 10:00:00'), $todoFromDb->getDueAt());
     }
 
 

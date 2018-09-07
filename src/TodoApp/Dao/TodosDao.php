@@ -72,6 +72,24 @@ class TodosDao
     }
 
     /**
+     * @param Todo $todo
+     * @return bool
+     */
+    public function updateTodo(Todo $todo)
+    {
+        $statement = $this->pdo->prepare(
+            "UPDATE todos SET name = :name, description = :description, status = :status, due_at = :due_at WHERE id = :id"
+        );
+        return $statement->execute([
+            'name' => $todo->getName(),
+            'description' => $todo->getDescription(),
+            'status' => $todo->getStatus(),
+            'due_at' => $todo->getDueAt()->format('Y-m-d H:i:s'),
+            'id' => $todo->getId(),
+        ]);
+    }
+
+    /**
      * @param array $todoData
      * @return Todo
      */
