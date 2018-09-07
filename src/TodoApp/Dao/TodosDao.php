@@ -29,7 +29,9 @@ class TodosDao
     public function getTodo(int $id): Todo
     {
         $statement = $this->pdo->prepare('SELECT id, name, description, status, due_at FROM todos WHERE id = :id');
-        $statement->execute(['id' => $id]);
+        $statement->execute([
+            'id' => $id
+        ]);
         $todoData = $statement->fetch(PDO::FETCH_ASSOC);
 
         if(!$todoData) {
@@ -61,14 +63,10 @@ class TodosDao
         $statement = $this->pdo->prepare(
             "INSERT INTO todos (name, description, status, due_at) VALUES (:name, :description, :status, :due_at)"
         );
-        $statement->execute([
-            'name' => $todo->getName(),
-            'description' => $todo->getDescription(),
-            'status' => $todo->getStatus(),
-            'due_at' => $todo->getDueAt()->format('Y-m-d H:i:s'),
-        ]);
-        $id = $this->pdo->lastInsertId();
-        return $this->createTodoWithIdFromTodo($todo, $id);
+        $statement->execute($this->createTodoArrayFromTodo($todo));
+        $data = $this->createTodoArrayFromTodo($todo);
+        $data['id'] = $this->pdo->lastInsertId();
+        return $this->createTodoFromArray($data);
     }
 
     /**
@@ -80,13 +78,7 @@ class TodosDao
         $statement = $this->pdo->prepare(
             "UPDATE todos SET name = :name, description = :description, status = :status, due_at = :due_at WHERE id = :id"
         );
-        return $statement->execute([
-            'name' => $todo->getName(),
-            'description' => $todo->getDescription(),
-            'status' => $todo->getStatus(),
-            'due_at' => $todo->getDueAt()->format('Y-m-d H:i:s'),
-            'id' => $todo->getId(),
-        ]);
+        return $statement->execute($this->createTodoArrayFromTodo($todo));
     }
 
     /**
@@ -106,17 +98,19 @@ class TodosDao
 
     /**
      * @param Todo $todo
-     * @param int $id
-     * @return Todo
+     * @return array
      */
-    private function createTodoWithIdFromTodo(Todo $todo, int $id): Todo
-    {
-        return new Todo(
-            $todo->getName(),
-            $todo->getDescription(),
-            $todo->getStatus(),
-            $todo->getDueAt(),
-            $id
-        );
+    private function createTodoArrayFromTodo(Todo $todo) {
+        $data = [
+            'name' => $todo->getName(),
+            'description' => $todo->getDescription(),
+            'status' => $todo->getStatus(),
+            'due_at' => $todo->getDueAt()->format('Y-m-d H:i:s')
+        ];
+        $id = $todo->getId();
+        if($id) {
+            $data['id'] = $id;
+        }
+        return $data;
     }
 }

@@ -43,6 +43,4 @@ class TodoTest extends TestCase
         $this->assertNull($todo->getId());
     }
 
-
-
 }
