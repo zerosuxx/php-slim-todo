@@ -11,56 +11,38 @@ class TodoTest extends TestCase
     /**
      * @test
      */
-    public function getName_TodoExistsWithName_ReturnsName()
+    public function getters_GivenParameters_ReturnsPropertyValues()
     {
         $name = 'Test name';
-        $todo = new Todo($name, '', '', new DateTime());
+        $description = 'Description';
+        $status = 'complete';
+        $dueAt = new DateTime();
+        $id = 1;
+
+        $todo = new Todo($name, $description, $status, $dueAt, $id);
 
         $this->assertEquals($name, $todo->getName());
-    }
-
-    /**
-     * @test
-     */
-    public function getDescription_TodoExistsWithDescription_ReturnsDescription()
-    {
-        $description = 'Description';
-        $todo = new Todo('', $description, '', new DateTime());
-
         $this->assertEquals($description, $todo->getDescription());
-    }
-
-    /**
-     * @test
-     */
-    public function getStatus_TodoExistsWithStatus_ReturnsStatus()
-    {
-        $status = 'complete';
-        $todo = new Todo('', '', $status, new DateTime());
-
         $this->assertEquals($status, $todo->getStatus());
-    }
-
-    /**
-     * @test
-     */
-    public function getDueAt_TodoExistsWithDueDate_ReturnsDueAt()
-    {
-        $dueAt = new DateTime();
-        $todo = new Todo('', '', '', $dueAt);
-
         $this->assertEquals($dueAt, $todo->getDueAt());
-    }
-
-    /**
-     * @test
-     */
-    public function getId_TodoExistsWithId_ReturnsId()
-    {
-        $id = 1;
-        $todo = new Todo('', '', '', new DateTime(), $id);
-
         $this->assertEquals($id, $todo->getId());
     }
+
+    /**
+     * @test
+     */
+    public function getId_IdIsNotGiven_ReturnsNull()
+    {
+        $name = 'Test name';
+        $description = 'Description';
+        $status = 'complete';
+        $dueAt = new DateTime();
+
+        $todo = new Todo($name, $description, $status, $dueAt);
+
+        $this->assertNull($todo->getId());
+    }
+
+
 
 }
