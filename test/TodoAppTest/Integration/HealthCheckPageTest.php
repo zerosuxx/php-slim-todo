@@ -1,6 +1,8 @@
 <?php
 
-namespace Test\TodoAppTest;
+namespace Test\TodoAppTest\Integration;
+
+use Test\TodoAppTest\TodoAppTestCase;
 
 /**
  * Class HealthCheckPageTest
