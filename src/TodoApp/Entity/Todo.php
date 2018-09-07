@@ -2,28 +2,40 @@
 
 namespace TodoApp\Entity;
 
+use DateTime;
+
 /**
  * Class Todo
  * @package TodoApp\Entity
  */
 class Todo
 {
+    /**
+     * @var string
+     */
     private $name;
 
     /**
      * @var string
      */
     private $description;
+
     /**
      * @var string
      */
     private $status;
 
-    public function __construct(string $name, string $description, string $status)
+    /**
+     * @var DateTime
+     */
+    private $dueAt;
+
+    public function __construct(string $name, string $description, string $status, DateTime $dueAt)
     {
         $this->name = $name;
         $this->description = $description;
         $this->status = $status;
+        $this->dueAt = $dueAt;
     }
 
     /**
@@ -50,5 +62,12 @@ class Todo
         return $this->status;
     }
 
+    /**
+     * @return DateTime
+     */
+    public function getDueAt(): DateTime
+    {
+        return $this->dueAt;
+    }
 
 }
