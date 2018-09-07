@@ -29,4 +29,15 @@ class TodosDaoTest extends TodoAppTestCase
         $this->assertEquals('incomplete', $todo->getStatus());
         $this->assertEquals('2018-09-07 10:00:00', $todo->getDueAt()->format('Y-m-d H:i:s'));
     }
+
+    /**
+     * @test
+     */
+    public function getTodo_GivenEmptyDatabase_ThrowsException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->truncateTable('todos');
+        $dao = new TodosDao($this->getPDO());
+        $dao->getTodo(999);
+    }
 }

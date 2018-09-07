@@ -28,6 +28,10 @@ class TodosDao
         $statement->execute(['id' => $id]);
         $todoData = $statement->fetch(PDO::FETCH_ASSOC);
 
+        if(!$todoData) {
+            throw new \InvalidArgumentException('Todo not found');
+        }
+
         return new Todo(
             $todoData['name'],
             $todoData['description'],
