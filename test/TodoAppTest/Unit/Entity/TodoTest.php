@@ -60,4 +60,22 @@ class TodoTest extends TestCase
         $this->assertEquals(2, $newTodo->getId());
     }
 
+
+    /**
+     * @test
+     */
+    public function withStatus_ReturnsNewInstanceWithDifferentStatus()
+    {
+        $name = 'Test name';
+        $description = 'Description';
+        $status = 'incomplete';
+        $dueAt = new DateTime();
+
+        $todo = new Todo($name, $description, $status, $dueAt);
+
+        $newTodo = $todo->withStatus('complete');
+        $this->assertEquals('incomplete', $todo->getStatus());
+        $this->assertEquals('complete', $newTodo->getStatus());
+    }
+
 }

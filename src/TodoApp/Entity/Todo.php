@@ -88,10 +88,21 @@ class Todo
      * @param int $id
      * @return self
      */
-    public function withId(int $id)
+    public function withId(int $id): self
     {
         $new = clone $this;
         $new->id = $id;
+        return $new;
+    }
+
+    /**
+     * @param string $status
+     * @return self
+     */
+    public function withStatus(string $status): self
+    {
+        $new = clone $this;
+        $new->status = $status;
         return $new;
     }
 
