@@ -43,4 +43,21 @@ class TodoTest extends TestCase
         $this->assertNull($todo->getId());
     }
 
+    /**
+     * @test
+     */
+    public function withId_ReturnsNewInstanceWithDifferentId()
+    {
+        $name = 'Test name';
+        $description = 'Description';
+        $status = 'complete';
+        $dueAt = new DateTime();
+
+        $todo = new Todo($name, $description, $status, $dueAt, 1);
+
+        $newTodo = $todo->withId(2);
+        $this->assertEquals(1, $todo->getId());
+        $this->assertEquals(2, $newTodo->getId());
+    }
+
 }

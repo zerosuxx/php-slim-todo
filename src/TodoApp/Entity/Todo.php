@@ -84,4 +84,15 @@ class Todo
         return $this->id;
     }
 
+    /**
+     * @param int $id
+     * @return self
+     */
+    public function withId(int $id)
+    {
+        $new = clone $this;
+        $new->id = $id;
+        return $new;
+    }
+
 }
