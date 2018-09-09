@@ -2,7 +2,9 @@
 
 namespace TodoApp\Dao;
 
+use DateTime;
 use PDO;
+use PDOStatement;
 use TodoApp\Entity\Todo;
 
 /**
@@ -63,10 +65,8 @@ class TodosDao
         $statement = $this->pdo->prepare(
             "INSERT INTO todos (name, description, status, due_at) VALUES (:name, :description, :status, :due_at)"
         );
-        $statement->execute($this->createTodoArrayFromTodo($todo));
-        $data = $this->createTodoArrayFromTodo($todo);
-        $data['id'] = $this->pdo->lastInsertId();
-        return $this->createTodoFromArray($data);
+        $this->bindTodo($statement, $todo)->execute();
+        return $todo->withId($this->pdo->lastInsertId());
     }
 
     /**
@@ -78,7 +78,35 @@ class TodosDao
         $statement = $this->pdo->prepare(
             "UPDATE todos SET name = :name, description = :description, status = :status, due_at = :due_at WHERE id = :id"
         );
-        return $statement->execute($this->createTodoArrayFromTodo($todo));
+        return $this->bindTodo($statement, $todo)->execute();
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function completeTodo(int $id)
+    {
+        $todo = $this->getTodo($id);
+        return $this->updateTodo($todo->withStatus('complete'));
+    }
+
+    /**
+     * @param PDOStatement $statement
+     * @param Todo $todo
+     * @return PDOStatement
+     */
+    private function bindTodo(PDOStatement $statement, Todo $todo)
+    {
+        $id = $todo->getId();
+        if($id) {
+            $statement->bindParam('id', $id, PDO::PARAM_INT);
+        }
+        $statement->bindParam('name', $todo->getName());
+        $statement->bindParam('description', $todo->getDescription());
+        $statement->bindParam('status', $todo->getStatus());
+        $statement->bindParam('due_at', $todo->getDueAt()->format('Y-m-d H:i:s'));
+        return $statement;
     }
 
     /**
@@ -91,36 +119,8 @@ class TodosDao
             $todoData['name'],
             $todoData['description'],
             $todoData['status'],
-            new \DateTime($todoData['due_at']),
+            new DateTime($todoData['due_at']),
             $todoData['id']
         );
-    }
-
-    /**
-     * @param Todo $todo
-     * @return array
-     */
-    private function createTodoArrayFromTodo(Todo $todo)
-    {
-        $todoData = [
-            'name' => $todo->getName(),
-            'description' => $todo->getDescription(),
-            'status' => $todo->getStatus(),
-            'due_at' => $todo->getDueAt()->format('Y-m-d H:i:s')
-        ];
-        $id = $todo->getId();
-        if ($id) {
-            $todoData['id'] = $id;
-        }
-        return $todoData;
-    }
-
-    public function completeTodo(int $id)
-    {
-        $todo = $this->getTodo($id);
-        $todoArray = $this->createTodoArrayFromTodo($todo);
-        $todoArray['status'] = 'complete';
-        $modifiedTodo = $this->createTodoFromArray($todoArray);
-        return $this->updateTodo($modifiedTodo);
     }
 }
