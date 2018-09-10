@@ -19,6 +19,7 @@ services:
       - '8080:80'
     volumes:
       - ./:/var/www/html
+      - ./config/environment/php/php.ini:/usr/local/etc/php/php.ini
     networks:
       - todo_app-net
   test:
@@ -27,6 +28,7 @@ services:
       APPLICATION_ENV: "test"
     volumes:
       - .:/opt/project
+      - ./config/environment/php/php.ini:/usr/local/etc/php/php.ini
     networks:
       - todo_app-net
 networks:
