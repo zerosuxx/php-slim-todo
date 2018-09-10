@@ -29,7 +29,6 @@ class IndexPageTest extends TodoAppTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains($savedTodo->getName(), (string)$response->getBody());
         $this->assertContains($savedTodo->getDescription(), (string)$response->getBody());
-        $this->assertContains($savedTodo->getStatus(), (string)$response->getBody());
         $this->assertContains($savedTodo->getDueAt()->format('Y-m-d H:i:s'), (string)$response->getBody());
     }
 }
