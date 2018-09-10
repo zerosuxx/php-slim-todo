@@ -4,6 +4,7 @@ namespace Test\TodoAppTest\Integration;
 
 use Test\TodoAppTest\TodoAppTestCase;
 use TodoApp\Dao\TodosDao;
+use Zero\Form\Validator\CSRFTokenValidator;
 
 /**
  * Class AddPageTest
@@ -26,10 +27,12 @@ class AddPageTest extends TodoAppTestCase
      */
     public function callsAddPage_Returns301()
     {
+        $_SESSION[CSRFTokenValidator::TOKEN_KEY] = 'token';
         $response = $this->runApp('POST', '/todo/add', [
             'name' => 'Test Name',
             'description' => 'Test message',
-            'due_at' => '2018-09-10 10:00:00'
+            'due_at' => '2018-09-10 10:00:00',
+            '_token' => 'token'
         ]);
 
         $this->assertEquals(301, $response->getStatusCode());
