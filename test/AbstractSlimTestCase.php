@@ -65,10 +65,10 @@ abstract class AbstractSlimTestCase extends TestCase
     }
 
     /**
-     * @param string $name [optional] default: PDO
+     * @param string $name [optional] default: pdo
      * @return PDO
      */
-    protected function getPDO($name = 'PDO'): PDO
+    protected function getPDO($name = 'pdo'): PDO
     {
         return $this->getService($name);
     }
