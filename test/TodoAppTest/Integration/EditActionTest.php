@@ -7,9 +7,6 @@ use TodoApp\Dao\TodosDao;
 use TodoApp\Entity\Todo;
 use Zero\Form\Validator\CSRFTokenValidator;
 
-/**
- * Class AddPageTest
- */
 class EditActionTest extends TodoAppTestCase
 {
     /**
@@ -26,7 +23,7 @@ class EditActionTest extends TodoAppTestCase
     /**
      * @test
      */
-    public function callsAddPage_GivenValidData_Returns301()
+    public function callsEditPage_GivenValidData_Returns301()
     {
         $this->dao->saveTodo(new Todo('Test Name', 'Test message', 'incomplete', new \DateTime()));
         $_SESSION[CSRFTokenValidator::TOKEN_KEY] = 'token';
@@ -44,5 +41,25 @@ class EditActionTest extends TodoAppTestCase
         $this->assertEquals('Test message 1', $todo->getDescription());
         $this->assertEquals('incomplete', $todo->getStatus());
         $this->assertEquals('2019-09-10 10:00:00', $todo->getDueAt()->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * @test
+     */
+    public function callsEditPage_GivenInValidData_Returns301()
+    {
+        $response = $this->runApp('POST', '/todo/edit/1', [
+        ]);
+
+        $this->assertEquals(301, $response->getStatusCode());
+
+        $todos = $this->dao->getTodos();
+        $this->assertCount(0, $todos);
+        $this->assertEquals([
+            'name' => 'Name can not be empty',
+            'description' => 'Description can not be empty',
+            'due_at' => 'Due At can not be empty' . "\n" . 'Wrong datetime format',
+            '_token' => 'Token mismatch',
+        ], $_SESSION['errors']);
     }
 }

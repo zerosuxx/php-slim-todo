@@ -46,14 +46,18 @@ class EditAction
         $this->form->input('due_at', new StringFilter(), $dateValidator);
         $this->form->input('_token', new StringFilter(), new CSRFTokenValidator());
 
-        $todo = $this->dao->getTodo($args['id']);
+        if ($this->form->handle($request)->isValid()) {
+            $todo = $this->dao->getTodo($args['id']);
 
-        $data = $this->form->handle($request)->getData();
-        $data['id'] = $todo->getId();
-        $data['status'] = $todo->getStatus();
+            $data = $this->form->handle($request)->getData();
+            $data['id'] = $todo->getId();
+            $data['status'] = $todo->getStatus();
 
-        $todo = $this->dao->createTodoFromArray($data);
-        $this->dao->updateTodo($todo);
+            $todo = $this->dao->createTodoFromArray($data);
+            $this->dao->updateTodo($todo);
+        } else {
+            $_SESSION['errors'] = $this->form->getErrors();
+        }
 
         return $response->withRedirect('/todos', 301);
     }
