@@ -18,7 +18,7 @@ class AddViewActionTest extends TodoAppTestCase
     /**
      * @test
      */
-    public function callsAddPage_GivenErrorsAndData_Returns200WithErrorsAndDatas()
+    public function callsAddPage_GivenErrorsAndData_Returns200WithErrorsAndData()
     {
         $_SESSION['errors'] = ['name' => 'Invalid data'];
         $_SESSION['data'] = ['description' => 'Test desc'];
