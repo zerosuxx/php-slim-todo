@@ -7,9 +7,11 @@ use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
+use TodoApp\Action\AddAction;
 use TodoApp\Action\HealthCheckAction;
 use TodoApp\Action\ListAction;
 use TodoApp\Dao\TodosDao;
+use Zero\Form\Form;
 
 /**
  * Class ConfigProvider
@@ -55,11 +57,15 @@ class ConfigProvider
         $container[ListAction::class] = function (ContainerInterface $container) {
             return new ListAction($container->get(TodosDao::class), $container->get('view'));
         };
+        $container[AddAction::class] = function (ContainerInterface $container) {
+            return new AddAction($container->get(TodosDao::class), new Form());
+        };
     }
 
     public function routes(App $app)
     {
         $app->get('/healthcheck', HealthCheckAction::class);
-        $app->get('/list', ListAction::class);
+        $app->get('/todo/list', ListAction::class);
+        $app->post('/todo/add', AddAction::class);
     }
 }
