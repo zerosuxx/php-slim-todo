@@ -36,7 +36,7 @@ class CompleteActionTest extends TodoAppTestCase
     /**
      * @test
      */
-    public function callsCompletePage_WithNotExistsTodo_Returns301()
+    public function callsCompletePage_WithNotExistsTodo_ThrowsException()
     {
         $this->expectException(\InvalidArgumentException::class);
 
