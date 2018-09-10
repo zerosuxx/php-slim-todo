@@ -8,10 +8,10 @@ use Slim\Views\Twig;
 use TodoApp\Dao\TodosDao;
 
 /**
- * Class ListAction
+ * Class IndexAction
  * @package TodoApp\Action
  */
-class ListAction
+class IndexAction
 {
     /**
      * @var TodosDao
@@ -30,6 +30,6 @@ class ListAction
 
     public function __invoke(Request $request, Response $response)
     {
-        return $this->view->render($response, 'list.html.twig', ['todos' => $this->dao->getTodos()]);
+        return $this->view->render($response, 'index.html.twig', ['todos' => $this->dao->getTodos()]);
     }
 }

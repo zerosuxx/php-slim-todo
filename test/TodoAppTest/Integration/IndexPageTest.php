@@ -6,10 +6,7 @@ use Test\TodoAppTest\TodoAppTestCase;
 use TodoApp\Dao\TodosDao;
 use TodoApp\Entity\Todo;
 
-/**
- * Class ListPageTest
- */
-class ListPageTest extends TodoAppTestCase
+class IndexPageTest extends TodoAppTestCase
 {
     /**
      * @var TodosDao
@@ -28,7 +25,7 @@ class ListPageTest extends TodoAppTestCase
     public function callsListPage_Returns200WithTodos()
     {
         $savedTodo = $this->dao->saveTodo(new Todo('Test Name', 'test message', 'incomplete', new \DateTime()));
-        $response = $this->runApp('GET', '/todo/list');
+        $response = $this->runApp('GET', '/todos');
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains($savedTodo->getName(), (string)$response->getBody());
         $this->assertContains($savedTodo->getDescription(), (string)$response->getBody());

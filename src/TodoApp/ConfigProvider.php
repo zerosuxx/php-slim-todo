@@ -9,7 +9,7 @@ use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use TodoApp\Action\AddAction;
 use TodoApp\Action\HealthCheckAction;
-use TodoApp\Action\ListAction;
+use TodoApp\Action\IndexAction;
 use TodoApp\Dao\TodosDao;
 use Zero\Form\Form;
 
@@ -54,8 +54,8 @@ class ConfigProvider
         $container[HealthCheckAction::class] = function (ContainerInterface $container) {
             return new HealthCheckAction($container->get('pdo'));
         };
-        $container[ListAction::class] = function (ContainerInterface $container) {
-            return new ListAction($container->get(TodosDao::class), $container->get('view'));
+        $container[IndexAction::class] = function (ContainerInterface $container) {
+            return new IndexAction($container->get(TodosDao::class), $container->get('view'));
         };
         $container[AddAction::class] = function (ContainerInterface $container) {
             return new AddAction($container->get(TodosDao::class), new Form());
@@ -65,7 +65,7 @@ class ConfigProvider
     public function routes(App $app)
     {
         $app->get('/healthcheck', HealthCheckAction::class);
-        $app->get('/todo/list', ListAction::class);
+        $app->get('/todos', IndexAction::class);
         $app->post('/todo/add', AddAction::class);
     }
 }
