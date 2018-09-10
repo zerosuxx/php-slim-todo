@@ -4,10 +4,7 @@ namespace Test\TodoAppTest\Integration;
 
 use Test\TodoAppTest\TodoAppTestCase;
 
-/**
- * Class HealthCheckPageTest
- */
-class HealthCheckPageTest extends TodoAppTestCase
+class HealthCheckActionTest extends TodoAppTestCase
 {
     /**
      * @test

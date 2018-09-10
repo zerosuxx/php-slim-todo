@@ -6,7 +6,7 @@ use Test\TodoAppTest\TodoAppTestCase;
 use TodoApp\Dao\TodosDao;
 use Zero\Form\Validator\CSRFTokenValidator;
 
-class AddPageTest extends TodoAppTestCase
+class AddActionTest extends TodoAppTestCase
 {
     /**
      * @var TodosDao
