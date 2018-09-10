@@ -32,4 +32,14 @@ class CompleteActionTest extends TodoAppTestCase
         $todo = $this->dao->getTodo(1);
         $this->assertEquals('complete', $todo->getStatus());
     }
+
+    /**
+     * @test
+     */
+    public function callsCompletePage_WithNotExistsTodo_Returns301()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->runApp('POST', '/todo/complete/not-exists');
+    }
 }
