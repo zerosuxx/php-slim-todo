@@ -164,4 +164,24 @@ class TodosDaoTest extends TodoAppTestCase
         $this->assertTrue($deleted);
     }
 
+    /**
+     * @test
+     */
+    public function createTodoFromArray_ReturnsNewTodo()
+    {
+        $todoData = [
+            'name' => 'Test Name',
+            'description' => 'Test desc',
+            'status' => 'incomplete',
+            'due_at' => '2018-09-10 11:26:00'
+        ];
+        $todo = $this->dao->createTodoFromArray($todoData);
+
+        $this->assertEquals($todoData['name'], $todo->getName());
+        $this->assertEquals($todoData['description'], $todo->getDescription());
+        $this->assertEquals($todoData['status'], $todo->getStatus());
+        $this->assertEquals($todoData['due_at'], $todo->getDueAt()->format('Y-m-d H:i:s'));
+        $this->assertNull($todo->getId());
+    }
+
 }

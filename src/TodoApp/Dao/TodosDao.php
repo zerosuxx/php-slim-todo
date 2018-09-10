@@ -128,7 +128,7 @@ class TodosDao
      * @param array $todoData
      * @return Todo
      */
-    private function createTodoFromArray(array $todoData): Todo
+    public function createTodoFromArray(array $todoData): Todo
     {
         return new Todo(
             $todoData['name'],
