@@ -12,6 +12,7 @@ use TodoApp\Action\AddViewAction;
 use TodoApp\Action\CompleteAction;
 use TodoApp\Action\DeleteAction;
 use TodoApp\Action\EditAction;
+use TodoApp\Action\EditViewAction;
 use TodoApp\Action\HealthCheckAction;
 use TodoApp\Action\IndexViewAction;
 use TodoApp\Dao\TodosDao;
@@ -68,6 +69,9 @@ class ConfigProvider
         $container[AddAction::class] = function (ContainerInterface $container) {
             return new AddAction($container->get(TodosDao::class), new TodoForm());
         };
+        $container[EditViewAction::class] = function (ContainerInterface $container) {
+            return new EditViewAction($container->get('view'), new CSRFTokenValidator());
+        };
         $container[EditAction::class] = function (ContainerInterface $container) {
             return new EditAction($container->get(TodosDao::class), new TodoForm());
         };
@@ -85,6 +89,7 @@ class ConfigProvider
         $app->get('/todos', IndexViewAction::class);
         $app->get('/todo/add', AddViewAction::class);
         $app->post('/todo/add', AddAction::class);
+        $app->get('/todo/edit/{id}', EditViewAction::class);
         $app->post('/todo/edit/{id}', EditAction::class);
         $app->post('/todo/complete/{id}', CompleteAction::class);
         $app->post('/todo/delete/{id}', DeleteAction::class);
