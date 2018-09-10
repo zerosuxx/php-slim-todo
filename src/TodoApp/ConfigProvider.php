@@ -70,7 +70,7 @@ class ConfigProvider
             return new AddAction($container->get(TodosDao::class), new TodoForm());
         };
         $container[EditViewAction::class] = function (ContainerInterface $container) {
-            return new EditViewAction($container->get('view'), new CSRFTokenValidator());
+            return new EditViewAction($container->get(TodosDao::class), $container->get('view'), new CSRFTokenValidator());
         };
         $container[EditAction::class] = function (ContainerInterface $container) {
             return new EditAction($container->get(TodosDao::class), new TodoForm());

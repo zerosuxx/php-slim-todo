@@ -29,4 +29,13 @@ class EditViewActionTest extends TodoAppTestCase
         $response = $this->runApp('GET', '/todo/edit/1');
         $this->assertEquals(200, $response->getStatusCode());
     }
+
+    /**
+     * @test
+     */
+    public function callsEditPage_WithNotExistsTodo_ThrowsException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->runApp('GET', '/todo/edit/not-exists');
+    }
 }
