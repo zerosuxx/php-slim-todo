@@ -62,4 +62,19 @@ class EditActionTest extends TodoAppTestCase
             '_token' => 'Token mismatch',
         ], $_SESSION['errors']);
     }
+
+    /**
+     * @test
+     */
+    public function callsEditPage_WithNotExistsTodo_ThrowsException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $_SESSION[CSRFTokenValidator::TOKEN_KEY] = 'token';
+        $this->runApp('POST', '/todo/edit/not-exists', [
+            'name' => 'Test Name 1',
+            'description' => 'Test message 1',
+            'due_at' => '2019-09-10 10:00:00',
+            '_token' => 'token'
+        ]);
+    }
 }

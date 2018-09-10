@@ -30,9 +30,8 @@ class EditAction
 
     public function __invoke(Request $request, Response $response, array $args)
     {
-
         if ($this->form->handle($request)->isValid()) {
-            $todo = $this->dao->getTodo($args['id']);
+            $todo = $this->dao->getTodo((int)$args['id']);
 
             $data = $this->form->handle($request)->getData();
             $data['id'] = $todo->getId();
