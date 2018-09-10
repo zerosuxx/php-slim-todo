@@ -42,6 +42,6 @@ class AddAction
         $todo = $this->dao->createTodoFromArray($data);
         $this->dao->saveTodo($todo);
 
-        return $response->withRedirect('/list ', 301);
+        return $response->withRedirect('/todos', 301);
     }
 }
