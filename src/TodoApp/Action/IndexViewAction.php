@@ -6,7 +6,6 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
 use TodoApp\Dao\TodosDao;
-use Zero\Form\Validator\CSRFTokenValidator;
 
 /**
  * Class IndexViewAction
