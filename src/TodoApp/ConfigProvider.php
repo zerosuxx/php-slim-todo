@@ -8,6 +8,7 @@ use Slim\App;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use TodoApp\Action\AddAction;
+use TodoApp\Action\EditAction;
 use TodoApp\Action\HealthCheckAction;
 use TodoApp\Action\IndexViewAction;
 use TodoApp\Dao\TodosDao;
@@ -61,6 +62,9 @@ class ConfigProvider
         $container[AddAction::class] = function (ContainerInterface $container) {
             return new AddAction($container->get(TodosDao::class), new Form());
         };
+        $container[EditAction::class] = function (ContainerInterface $container) {
+            return new EditAction($container->get(TodosDao::class), new Form());
+        };
     }
 
     public function routes(App $app)
@@ -68,5 +72,6 @@ class ConfigProvider
         $app->get('/healthcheck', HealthCheckAction::class);
         $app->get('/todos', IndexViewAction::class);
         $app->post('/todo/add', AddAction::class);
+        $app->post('/todo/edit/{id}', \TodoApp\Action\EditAction::class);
     }
 }
