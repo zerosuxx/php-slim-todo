@@ -1,4 +1,4 @@
-<div class="alert alert-danger" role="alert">
+<div class="{{ errors ? 'alert alert-danger' : ''}}" role="alert">
     {% for error in errors %}
         {{ error }}<br>
     {% endfor %}
