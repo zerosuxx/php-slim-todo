@@ -6,17 +6,19 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
 use TodoApp\Dao\TodosDao;
+use Zero\Form\Validator\CSRFTokenValidator;
 
 /**
- * Class IndexAction
+ * Class IndexViewAction
  * @package TodoApp\Action
  */
-class IndexAction
+class IndexViewAction
 {
     /**
      * @var TodosDao
      */
     private $dao;
+
     /**
      * @var Twig
      */
@@ -30,6 +32,8 @@ class IndexAction
 
     public function __invoke(Request $request, Response $response)
     {
-        return $this->view->render($response, 'index.html.twig', ['todos' => $this->dao->getTodos()]);
+        return $this->view->render($response, 'index.html.twig', [
+            'todos' => $this->dao->getTodos()
+        ]);
     }
 }
