@@ -9,6 +9,7 @@ use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use TodoApp\Action\AddAction;
 use TodoApp\Action\CompleteAction;
+use TodoApp\Action\DeleteAction;
 use TodoApp\Action\EditAction;
 use TodoApp\Action\HealthCheckAction;
 use TodoApp\Action\IndexViewAction;
@@ -68,6 +69,9 @@ class ConfigProvider
         $container[CompleteAction::class] = function (ContainerInterface $container) {
             return new CompleteAction($container->get(TodosDao::class));
         };
+        $container[DeleteAction::class] = function (ContainerInterface $container) {
+            return new DeleteAction($container->get(TodosDao::class));
+        };
     }
 
     public function routes(App $app)
@@ -77,5 +81,6 @@ class ConfigProvider
         $app->post('/todo/add', AddAction::class);
         $app->post('/todo/edit/{id}', EditAction::class);
         $app->post('/todo/complete/{id}', CompleteAction::class);
+        $app->post('/todo/delete/{id}', DeleteAction::class);
     }
 }
