@@ -6,7 +6,7 @@ use Test\TodoAppTest\TodoAppTestCase;
 use TodoApp\Dao\TodosDao;
 use TodoApp\Entity\Todo;
 
-class IndexActionTest extends TodoAppTestCase
+class IndexViewActionTest extends TodoAppTestCase
 {
     /**
      * @var TodosDao
