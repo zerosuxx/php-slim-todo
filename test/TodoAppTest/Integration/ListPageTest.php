@@ -28,7 +28,7 @@ class ListPageTest extends TodoAppTestCase
     public function callsListPage_Returns200WithTodos()
     {
         $savedTodo = $this->dao->saveTodo(new Todo('Test Name', 'test message', 'incomplete', new \DateTime()));
-        $response = $this->runApp('GET', '/list');
+        $response = $this->runApp('GET', '/todo/list');
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains($savedTodo->getName(), (string)$response->getBody());
         $this->assertContains($savedTodo->getDescription(), (string)$response->getBody());
