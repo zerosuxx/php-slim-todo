@@ -82,13 +82,14 @@ class TodosDao
     }
 
     /**
-     * @param int $id
-     * @return bool
+     * @param Todo $todo
+     * @return Todo
      */
-    public function completeTodo(int $id)
+    public function completeTodo(Todo $todo)
     {
-        $todo = $this->getTodo($id);
-        return $this->updateTodo($todo->withStatus('complete'));
+        $completedTodo = $todo->withStatus('complete');
+        $this->updateTodo($completedTodo);
+        return $completedTodo;
     }
 
     /**
