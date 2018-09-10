@@ -93,6 +93,20 @@ class TodosDao
     }
 
     /**
+     * @param Todo $todo
+     * @return bool
+     */
+    public function deleteTodo(Todo $todo)
+    {
+        $statement = $this->pdo->prepare(
+            "DELETE FROM todos WHERE id = :id"
+        );
+        return $statement->execute([
+            'id' => $todo->getId()
+        ]);
+    }
+
+    /**
      * @param PDOStatement $statement
      * @param Todo $todo
      * @return PDOStatement

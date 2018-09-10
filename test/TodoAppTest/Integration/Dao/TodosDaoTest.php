@@ -147,4 +147,21 @@ class TodosDaoTest extends TodoAppTestCase
         $this->assertEquals('complete', $todoFromDb->getStatus());
     }
 
+    /**
+     * @test
+     */
+    public function deleteTodo_GivenExistingTodo_DeletesTodo()
+    {
+        $newTodo = new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-09 10:00:00'));
+
+        $savedTodo = $this->dao->saveTodo($newTodo);
+
+        $this->assertCount(1, $this->dao->getTodos());
+
+        $deleted = $this->dao->deleteTodo($savedTodo);
+
+        $this->assertCount(0, $this->dao->getTodos());
+        $this->assertTrue($deleted);
+    }
+
 }
