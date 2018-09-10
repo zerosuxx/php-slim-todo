@@ -1,0 +1,11 @@
+{% for error in errors %}
+    {{ error }}<br>
+{% endfor %}
+<form method="POST" action="/todo/add">
+    <table>
+        <tr><td>Name</td><td><input type="text" name="name" value="{{ data.name }}"></td></tr>
+        <tr><td>Description</td><td><input type="text" name="description" value="{{ data.description }}"></td></tr>
+        <tr><td>Due At</td><td><input type="text" name="due_at" value="{{ data.due_at }}"></td></tr>
+        <tr><td colspan="2"><input type="hidden" name="_token" value="{{ data.token }}"><input type="submit" value="Save"></td></tr>
+    </table>
+</form>

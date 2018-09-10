@@ -1,9 +1,7 @@
-<form method="POST" action="/todo/add">
-    <div>Name: <input type="text" name="name"></div>
-    <div>Description: <input type="text" name="description"></div>
-    <div>Due At: <input type="text" name="due_at"></div>
-    <div><input type="submit" value="Save"></div>
-</form>
-{% for todo in todos %}
-    <div>{{ todo.getName() }} - {{ todo.getDescription() }} - {{ todo.getStatus() }} - {{ todo.getDueAt().format('Y-m-d H:i:s') }}</div>
-{% endfor %}
+{% include 'form.html.twig' %}
+<table>
+    <tr><td>Name</td><td>Desc.</td><td>Due At</td></tr>
+    {% for todo in todos %}
+        <tr><td>{{ todo.getName() }}</td><td>{{ todo.getDescription() }}</td><td>{{ todo.getDueAt().format('Y-m-d H:i:s') }}</td></tr>
+    {% endfor %}
+</table>
