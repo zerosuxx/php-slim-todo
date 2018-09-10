@@ -36,10 +36,11 @@ class AddAction
 
             $todo = $this->dao->createTodoFromArray($data);
             $this->dao->saveTodo($todo);
+            return $response->withRedirect('/todos', 301);
         } else {
             $_SESSION['errors'] = $this->form->getErrors();
+            $_SESSION['data'] = $this->form->getData();
+            return $response->withRedirect('/todo/add', 301);
         }
-
-        return $response->withRedirect('/todos', 301);
     }
 }
