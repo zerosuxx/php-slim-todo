@@ -1,6 +1,17 @@
-<table>
-    <tr><td>Name</td><td>Desc.</td><td>Due At</td></tr>
-    {% for todo in todos %}
-        <tr><td>{{ todo.getName() }}</td><td>{{ todo.getDescription() }}</td><td>{{ todo.getDueAt().format('Y-m-d H:i:s') }}</td></tr>
-    {% endfor %}
-</table>
+{% extends "layout.html.twig" %}
+
+{% block contents %}
+    <a href="/todo/add" class="btn btn-primary">Add</a>
+    <table class="table">
+        <tr><td>Name</td><td>Desc.</td><td>Due At</td><td>Edit</td><td>Complete</td><td>Delete</td></tr>
+        {% for todo in todos %}
+            <tr>
+                <td>{{ todo.getName() }}</td>
+                <td>{{ todo.getDescription() }}</td>
+                <td>{{ todo.getDueAt().format('Y-m-d H:i:s') }}</td>
+                <td><a href="/todo/edit/{{ todo.getId() }}" class="btn btn-info">Edit</a></td>
+                <td><form method="POST" action="/todo/complete/{{ todo.getId() }}"><input type="submit" value="Complete" class="btn btn-success"></form></td>
+                <td><form method="POST" action="/todo/delete/{{ todo.getId() }}"><input type="submit" value="Delete" class="btn btn-danger"></form></td></tr>
+        {% endfor %}
+    </table>
+{% endblock %}
