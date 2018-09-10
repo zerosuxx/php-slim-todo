@@ -12,6 +12,7 @@ use TodoApp\Action\EditAction;
 use TodoApp\Action\HealthCheckAction;
 use TodoApp\Action\IndexViewAction;
 use TodoApp\Dao\TodosDao;
+use TodoApp\Form\TodoForm;
 use Zero\Form\Form;
 use Zero\Form\Validator\CSRFTokenValidator;
 
@@ -60,10 +61,10 @@ class ConfigProvider
             return new IndexViewAction($container->get(TodosDao::class), $container->get('view'));
         };
         $container[AddAction::class] = function (ContainerInterface $container) {
-            return new AddAction($container->get(TodosDao::class), new Form());
+            return new AddAction($container->get(TodosDao::class), new TodoForm());
         };
         $container[EditAction::class] = function (ContainerInterface $container) {
-            return new EditAction($container->get(TodosDao::class), new Form());
+            return new EditAction($container->get(TodosDao::class), new TodoForm());
         };
     }
 
