@@ -1,0 +1,3 @@
+{% for todo in todos %}
+    <div>{{ todo.getName() }} - {{ todo.getDescription() }} - {{ todo.getStatus() }} - {{ todo.getDueAt().format('Y-m-d H:i:s') }}</div>
+{% endfor %}
