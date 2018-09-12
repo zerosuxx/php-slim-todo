@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\TodoAppTest\Unit\Entity;
+namespace Test\TodoApp\Unit\Entity;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -41,6 +41,21 @@ class TodoTest extends TestCase
         $todo = new Todo($name, $description, $status, $dueAt);
 
         $this->assertNull($todo->getId());
+    }
+
+    /**
+     * @test
+     */
+    public function getDueAtTimestamp_ReturnsDueAtInTimestamp()
+    {
+        $name = 'Test name';
+        $description = 'Description';
+        $status = 'complete';
+        $dueAt = new DateTime();
+
+        $todo = new Todo($name, $description, $status, $dueAt);
+
+        $this->assertEquals($dueAt->format('Y-m-d H:i:s'), $todo->getDueAtTimestamp());
     }
 
     /**

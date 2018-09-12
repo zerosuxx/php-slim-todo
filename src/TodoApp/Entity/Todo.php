@@ -77,6 +77,14 @@ class Todo
     }
 
     /**
+     * @return string
+     */
+    public function getDueAtTimestamp(): string
+    {
+        return $this->dueAt->format('Y-m-d H:i:s');
+    }
+
+    /**
      * @return int
      */
     public function getId(): ?int
