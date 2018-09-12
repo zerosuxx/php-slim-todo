@@ -3,16 +3,16 @@
 namespace Test\TodoApp\Storage;
 
 use PHPUnit\Framework\TestCase;
-use TodoApp\Storage\Storage;
+use TodoApp\Storage\ArrayStorage;
 
-class StorageTest extends TestCase
+class ArrayStorageTest extends TestCase
 {
     /**
      * @test
      */
     public function get_WithEmptyData_ReturnsDefaultValue()
     {
-        $storage = new Storage();
+        $storage = new ArrayStorage();
         $this->assertNull($storage->get('not-exists'));
     }
 
@@ -24,23 +24,8 @@ class StorageTest extends TestCase
         $data = [
             'test-key' => 'test-value'
         ];
-        $storage = new Storage($data);
+        $storage = new ArrayStorage($data);
         $this->assertEquals('test-value', $storage->get('test-key'));
-    }
-
-    /**
-     * @test
-     */
-    public function get_WithData_ReturnsReferencedValue()
-    {
-        $data = [
-            'test-key' => [
-                'test-key2' => null
-            ]
-        ];
-        $storage = new Storage($data);
-        $storage->get('test-key')['test-key2'] = 'test-value2';
-        $this->assertEquals('test-value2', $data['test-key']['test-key2']);
     }
 
     /**
@@ -51,7 +36,7 @@ class StorageTest extends TestCase
         $data = [
             'test-key' => 'test-value'
         ];
-        $storage = new Storage($data);
+        $storage = new ArrayStorage($data);
         $value = $storage->consume('test-key');
         $this->assertEquals('test-value', $value);
         $this->assertFalse($storage->exists('test-key'));
@@ -62,23 +47,10 @@ class StorageTest extends TestCase
      */
     public function set_WithEmptyData_ReturnsNewValue()
     {
-        $storage = new Storage();
+        $storage = new ArrayStorage();
         $this->assertNull($storage->get('test-key'));
         $storage->set('test-key', 'test-value');
         $this->assertEquals('test-value', $storage->get('test-key'));
-    }
-
-    /**
-     * @test
-     */
-    public function set_WithData_EditReference()
-    {
-        $data = [
-            'test-key' => null
-        ];
-        $storage = new Storage($data);
-        $storage->set('test-key', 'test-value');
-        $this->assertEquals('test-value', $data['test-key']);
     }
 
     /**
@@ -89,7 +61,7 @@ class StorageTest extends TestCase
         $data = [
             'test-key' => 'test-value'
         ];
-        $storage = new Storage($data);
+        $storage = new ArrayStorage($data);
         $storage->remove('test-key');
         $this->assertNull($storage->get('test-key'));
     }
@@ -102,7 +74,7 @@ class StorageTest extends TestCase
         $data = [
             'test-key' => null
         ];
-        $storage = new Storage($data);
+        $storage = new ArrayStorage($data);
         $this->assertFalse($storage->has('test-key'));
     }
 
@@ -114,7 +86,7 @@ class StorageTest extends TestCase
         $data = [
             'test-key' => 'test-value'
         ];
-        $storage = new Storage($data);
+        $storage = new ArrayStorage($data);
         $this->assertTrue($storage->has('test-key'));
     }
 
@@ -126,22 +98,8 @@ class StorageTest extends TestCase
         $data = [
             'test-key' => null
         ];
-        $storage = new Storage($data);
+        $storage = new ArrayStorage($data);
         $this->assertTrue($storage->exists('test-key'));
-    }
-
-    /**
-     * @test
-     */
-    public function getArrayCopy_ReturnsReferencedData()
-    {
-        $data = [
-            'test-key' => null
-        ];
-        $storage = new Storage($data);
-        $this->assertSame($data, $storage->getArrayCopy());
-        $storage->getArrayCopy()['test'] = 'test';
-        $this->assertSame($data['test'], 'test');
     }
 
     /**
@@ -152,7 +110,7 @@ class StorageTest extends TestCase
         $data = [
             'test-key' => null
         ];
-        $storage = new Storage($data);
+        $storage = new ArrayStorage($data);
         $this->assertSame($data, $storage->toArray());
         $storage->toArray()['test'] = 'test';
         $this->assertArrayNotHasKey('test', $data);
