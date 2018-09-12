@@ -4,6 +4,9 @@
     {% endfor %}
 </div>
 <form method="POST" action="{{ action }}">
+    {% if method %}
+        <input type="hidden" name="_METHOD" value="{{ method }}">
+    {% endif %}
     <table>
         <tr><td>Name</td><td><input type="text" name="name" value="{{ data.name }}"></td></tr>
         <tr><td>Description</td><td><input type="text" name="description" value="{{ data.description }}"></td></tr>

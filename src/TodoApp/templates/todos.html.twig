@@ -1,0 +1,17 @@
+{% extends "layout.html.twig" %}
+
+{% block contents %}
+    <a href="/todo" class="btn btn-primary">Add</a>
+    <table class="table">
+        <tr><td>Name</td><td>Desc.</td><td>Due At</td><td>Edit</td><td>Complete</td><td>Delete</td></tr>
+        {% for todo in todos %}
+            <tr>
+                <td>{{ todo.getName() }}</td>
+                <td>{{ todo.getDescription() }}</td>
+                <td>{{ todo.getDueAt().format('Y-m-d H:i:s') }}</td>
+                <td><a href="/todo/{{ todo.getId() }}" class="btn btn-info">Edit</a></td>
+                <td><form method="POST" action="/todo/{{ todo.getId() }}"><input type="hidden" name="_METHOD" value="COMPLETE"><input type="submit" value="Complete" class="btn btn-success"></form></td>
+                <td><form method="POST" action="/todo/{{ todo.getId() }}"><input type="hidden" name="_METHOD" value="DELETE"><input type="submit" value="Delete" class="btn btn-danger"></form></td></tr>
+        {% endfor %}
+    </table>
+{% endblock %}
