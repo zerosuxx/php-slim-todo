@@ -18,6 +18,7 @@ use TodoApp\Action\ListViewAction;
 use TodoApp\Action\TodosViewAction;
 use TodoApp\Dao\TodosDao;
 use TodoApp\Form\TodoForm;
+use TodoApp\Storage\SessionStorage;
 use Zero\Form\Validator\CSRFTokenValidator;
 
 /**
@@ -56,6 +57,9 @@ class ConfigProvider
             $uri = $container->get('request')->getUri();
             $view->addExtension(new TwigExtension($router, $uri));
             return $view;
+        };
+        $container['session'] = function () {
+            return new SessionStorage();
         };
         $container[TodosDao::class] = function (ContainerInterface $container) {
             return new TodosDao($container->get('pdo'));
