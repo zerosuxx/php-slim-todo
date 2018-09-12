@@ -1,8 +1,8 @@
 <?php
 
-namespace Test\TodoAppTest\Integration;
+namespace Test\TodoApp\Integration;
 
-use Test\TodoAppTest\TodoAppTestCase;
+use Test\TodoApp\TodoAppTestCase;
 
 class AddViewActionTest extends TodoAppTestCase
 {
@@ -11,7 +11,7 @@ class AddViewActionTest extends TodoAppTestCase
      */
     public function callsAddPage_Returns200()
     {
-        $response = $this->runApp('GET', '/todo/add');
+        $response = $this->runApp('GET', '/todo');
         $this->assertEquals(200, $response->getStatusCode());
     }
 
@@ -22,7 +22,7 @@ class AddViewActionTest extends TodoAppTestCase
     {
         $_SESSION['errors'] = ['name' => 'Invalid data'];
         $_SESSION['data'] = ['description' => 'Test desc'];
-        $response = $this->runApp('GET', '/todo/add');
+        $response = $this->runApp('GET', '/todo');
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('Invalid data', (string)$response->getBody());
         $this->assertContains('Test desc', (string)$response->getBody());

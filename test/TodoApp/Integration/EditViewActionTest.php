@@ -1,33 +1,25 @@
 <?php
 
-namespace Test\TodoAppTest\Integration;
+namespace Test\TodoApp\Integration;
 
-use Test\TodoAppTest\TodoAppTestCase;
-use TodoApp\Dao\TodosDao;
+use Test\TodoApp\TodoAppTestCase;
 use TodoApp\Entity\Todo;
 
 class EditViewActionTest extends TodoAppTestCase
 {
 
     /**
-     * @var
-     */
-    private $dao;
-
-    protected function setUp()
-    {
-        $this->truncateTable('todos');
-        $this->dao = new TodosDao($this->getPDO());
-    }
-
-    /**
      * @test
      */
     public function callsEditPage_Returns200()
     {
-        $this->dao->saveTodo(new Todo('Test Name', 'Test message', 'incomplete', new \DateTime()));
-        $response = $this->runApp('GET', '/todo/edit/1');
+        $this->todosDao->saveTodo(new Todo('Test Name', 'Test message', 'incomplete', new \DateTime()));
+        $response = $this->runApp('GET', '/todo/1');
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains('PATCH', (string)$response->getBody());
+        $this->assertContains('Test Name', (string)$response->getBody());
+        $this->assertContains('Test message', (string)$response->getBody());
+        $this->assertContains('/todo/1', (string)$response->getBody());
     }
 
     /**
@@ -36,7 +28,7 @@ class EditViewActionTest extends TodoAppTestCase
     public function callsEditPage_WithNotExistsTodo_ThrowsException()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->runApp('GET', '/todo/edit/not-exists');
+        $this->runApp('GET', '/todo/not-exists');
     }
 
     /**
@@ -44,10 +36,10 @@ class EditViewActionTest extends TodoAppTestCase
      */
     public function callsEditPage_GivenErrorsAndData_Returns200WithErrorsAndData()
     {
-        $this->dao->saveTodo(new Todo('Test Name', 'Test message', 'incomplete', new \DateTime()));
+        $this->todosDao->saveTodo(new Todo('Test Name', 'Test message', 'incomplete', new \DateTime()));
         $_SESSION['errors'] = ['name' => 'Invalid data'];
         $_SESSION['data'] = ['description' => 'Test desc'];
-        $response = $this->runApp('GET', '/todo/edit/1');
+        $response = $this->runApp('GET', '/todo/1');
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('Invalid data', (string)$response->getBody());
         $this->assertContains('Test desc', (string)$response->getBody());

@@ -1,31 +1,19 @@
 <?php
 
-namespace Test\TodoAppTest\Integration;
+namespace Test\TodoApp\Integration;
 
-use Test\TodoAppTest\TodoAppTestCase;
-use TodoApp\Dao\TodosDao;
+use Test\TodoApp\TodoAppTestCase;
 use Zero\Form\Validator\CSRFTokenValidator;
 
 class AddActionTest extends TodoAppTestCase
 {
-    /**
-     * @var TodosDao
-     */
-    private $dao;
-
-    protected function setUp()
-    {
-        $this->truncateTable('todos');
-        $this->dao = new TodosDao($this->getPDO());
-    }
-
     /**
      * @test
      */
     public function callsAddPage_GivenValidData_Returns301()
     {
         $_SESSION[CSRFTokenValidator::TOKEN_KEY] = 'token';
-        $response = $this->runApp('POST', '/todo/add', [
+        $response = $this->runApp('POST', '/todo', [
             'name' => 'Test Name',
             'description' => 'Test message',
             'due_at' => '2018-09-10 10:00:00',
@@ -34,7 +22,7 @@ class AddActionTest extends TodoAppTestCase
 
         $this->assertEquals(301, $response->getStatusCode());
 
-        $todo = $this->dao->getTodo(1);
+        $todo = $this->todosDao->getTodo(1);
         $this->assertEquals('Test Name', $todo->getName());
         $this->assertEquals('Test message', $todo->getDescription());
         $this->assertEquals('incomplete', $todo->getStatus());
@@ -46,11 +34,11 @@ class AddActionTest extends TodoAppTestCase
      */
     public function callsAddPage_GivenEmptyData_Returns301()
     {
-        $response = $this->runApp('POST', '/todo/add', []);
+        $response = $this->runApp('POST', '/todo', []);
 
         $this->assertEquals(301, $response->getStatusCode());
 
-        $todos = $this->dao->getTodos();
+        $todos = $this->todosDao->getTodos();
         $this->assertCount(0, $todos);
         $this->assertEquals([
             'name' => 'Name can not be empty',

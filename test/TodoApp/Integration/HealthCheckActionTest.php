@@ -1,11 +1,17 @@
 <?php
 
-namespace Test\TodoAppTest\Integration;
+namespace Test\TodoApp\Integration;
 
-use Test\TodoAppTest\TodoAppTestCase;
+use Test\TodoApp\TodoAppTestCase;
 
 class HealthCheckActionTest extends TodoAppTestCase
 {
+
+    protected function setUp()
+    {
+
+    }
+
     /**
      * @test
      */

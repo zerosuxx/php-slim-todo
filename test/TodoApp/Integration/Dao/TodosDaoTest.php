@@ -1,9 +1,8 @@
 <?php
 
-namespace Test\TodoAppTest\Integration\Dao;
+namespace Test\TodoApp\Integration\Dao;
 
-use Test\TodoAppTest\TodoAppTestCase;
-use TodoApp\Dao\TodosDao;
+use Test\TodoApp\TodoAppTestCase;
 use TodoApp\Entity\Todo;
 
 /**
@@ -11,16 +10,6 @@ use TodoApp\Entity\Todo;
  */
 class TodosDaoTest extends TodoAppTestCase
 {
-    /**
-     * @var TodosDao
-     */
-    private $dao;
-
-    protected function setUp()
-    {
-        $this->truncateTable('todos');
-        $this->dao = new TodosDao($this->getPDO());
-    }
 
     /**
      * @test
@@ -30,7 +19,7 @@ class TodosDaoTest extends TodoAppTestCase
         $this->getPDO()->query(
             "INSERT INTO todos (name, description, status, due_at) VALUES ('Test name', 'test desc', 'incomplete', '2018-09-07 10:00:00')"
         );
-        $todo = $this->dao->getTodo(1);
+        $todo = $this->todosDao->getTodo(1);
         $this->assertInstanceOf(Todo::class, $todo);
         $this->assertEquals(1, $todo->getId());
         $this->assertEquals('Test name', $todo->getName());
@@ -45,7 +34,7 @@ class TodosDaoTest extends TodoAppTestCase
     public function getTodo_GivenEmptyDatabase_ThrowsException()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->dao->getTodo(999);
+        $this->todosDao->getTodo(999);
     }
 
     /**
@@ -55,9 +44,9 @@ class TodosDaoTest extends TodoAppTestCase
     {
         $todo = new Todo('name', 'desc', 'incomplete', new \DateTime('2018-09-07 10:00:00'));
 
-        $savedTodo = $this->dao->saveTodo($todo);
+        $savedTodo = $this->todosDao->saveTodo($todo);
 
-        $todoFromDb = $this->dao->getTodo(1);
+        $todoFromDb = $this->todosDao->getTodo(1);
 
         $this->assertInstanceOf(Todo::class, $savedTodo);
         $this->assertEquals(1, $savedTodo->getId());
@@ -77,10 +66,10 @@ class TodosDaoTest extends TodoAppTestCase
 
         $savedRecords = [];
         foreach ($records as $record) {
-            $savedRecords[] = $this->dao->saveTodo($record);
+            $savedRecords[] = $this->todosDao->saveTodo($record);
         }
 
-        $todosFromDb = $this->dao->getTodos();
+        $todosFromDb = $this->todosDao->getTodos();
 
         $this->assertEquals($todosFromDb, $savedRecords);
     }
@@ -98,10 +87,10 @@ class TodosDaoTest extends TodoAppTestCase
 
         $savedRecords = [];
         foreach ($records as $record) {
-            $savedRecords[] = $this->dao->saveTodo($record);
+            $savedRecords[] = $this->todosDao->saveTodo($record);
         }
 
-        $todosFromDb = $this->dao->getTodos();
+        $todosFromDb = $this->todosDao->getTodos();
 
         $this->assertCount(2, $todosFromDb);
         $this->assertEquals('incomplete', $savedRecords[0]->getStatus());
@@ -115,13 +104,13 @@ class TodosDaoTest extends TodoAppTestCase
     {
         $todoToSave = new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-09 10:00:00'));
 
-        $this->dao->saveTodo($todoToSave);
+        $this->todosDao->saveTodo($todoToSave);
 
         $todoToModify = new Todo('name 2', 'desc 2', 'complete', new \DateTime('2019-09-09 10:00:00'), 1);
 
-        $updated = $this->dao->updateTodo($todoToModify);
+        $updated = $this->todosDao->updateTodo($todoToModify);
 
-        $todoFromDb = $this->dao->getTodo(1);
+        $todoFromDb = $this->todosDao->getTodo(1);
 
         $this->assertTrue($updated);
         $this->assertEquals('name 2', $todoFromDb->getName());
@@ -137,11 +126,11 @@ class TodosDaoTest extends TodoAppTestCase
     {
         $newTodo = new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-09 10:00:00'));
 
-        $savedTodo = $this->dao->saveTodo($newTodo);
+        $savedTodo = $this->todosDao->saveTodo($newTodo);
 
-        $updatedTodo = $this->dao->completeTodo($savedTodo);
+        $updatedTodo = $this->todosDao->completeTodo($savedTodo);
 
-        $todoFromDb = $this->dao->getTodo(1);
+        $todoFromDb = $this->todosDao->getTodo(1);
 
         $this->assertEquals('complete', $updatedTodo->getStatus());
         $this->assertEquals('complete', $todoFromDb->getStatus());
@@ -154,13 +143,13 @@ class TodosDaoTest extends TodoAppTestCase
     {
         $newTodo = new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-09 10:00:00'));
 
-        $savedTodo = $this->dao->saveTodo($newTodo);
+        $savedTodo = $this->todosDao->saveTodo($newTodo);
 
-        $this->assertCount(1, $this->dao->getTodos());
+        $this->assertCount(1, $this->todosDao->getTodos());
 
-        $deleted = $this->dao->deleteTodo($savedTodo);
+        $deleted = $this->todosDao->deleteTodo($savedTodo);
 
-        $this->assertCount(0, $this->dao->getTodos());
+        $this->assertCount(0, $this->todosDao->getTodos());
         $this->assertTrue($deleted);
     }
 
@@ -175,7 +164,7 @@ class TodosDaoTest extends TodoAppTestCase
             'status' => 'incomplete',
             'due_at' => '2018-09-10 11:26:00'
         ];
-        $todo = $this->dao->createTodoFromArray($todoData);
+        $todo = $this->todosDao->createTodoFromArray($todoData);
 
         $this->assertEquals($todoData['name'], $todo->getName());
         $this->assertEquals($todoData['description'], $todo->getDescription());
