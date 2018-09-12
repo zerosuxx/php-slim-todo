@@ -1195,16 +1195,16 @@
         },
         {
             "name": "zer0php/form",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zer0php/form.git",
-                "reference": "30af67483c27c552b2067335a09b6a21ccd609d3"
+                "reference": "d3888b74d6719d47823436d7c777a4592a9b0385"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zer0php/form/zipball/30af67483c27c552b2067335a09b6a21ccd609d3",
-                "reference": "30af67483c27c552b2067335a09b6a21ccd609d3",
+                "url": "https://api.github.com/repos/zer0php/form/zipball/d3888b74d6719d47823436d7c777a4592a9b0385",
+                "reference": "d3888b74d6719d47823436d7c777a4592a9b0385",
                 "shasum": ""
             },
             "require": {
@@ -1232,7 +1232,7 @@
                 }
             ],
             "description": "Basic Request Data Handler",
-            "time": "2018-09-10T11:21:17+00:00"
+            "time": "2018-09-12T12:07:21+00:00"
         }
     ],
     "packages-dev": [
