@@ -14,7 +14,8 @@ use TodoApp\Action\DeleteAction;
 use TodoApp\Action\EditAction;
 use TodoApp\Action\EditViewAction;
 use TodoApp\Action\HealthCheckAction;
-use TodoApp\Action\IndexViewAction;
+use TodoApp\Action\ListViewAction;
+use TodoApp\Action\TodosViewAction;
 use TodoApp\Dao\TodosDao;
 use TodoApp\Form\TodoForm;
 use Zero\Form\Validator\CSRFTokenValidator;
@@ -62,8 +63,8 @@ class ConfigProvider
         $container[HealthCheckAction::class] = function (ContainerInterface $container) {
             return new HealthCheckAction($container->get('pdo'));
         };
-        $container[IndexViewAction::class] = function (ContainerInterface $container) {
-            return new IndexViewAction($container->get(TodosDao::class), $container->get('view'));
+        $container[TodosViewAction::class] = function (ContainerInterface $container) {
+            return new TodosViewAction($container->get(TodosDao::class), $container->get('view'));
         };
         $container[AddViewAction::class] = function (ContainerInterface $container) {
             return new AddViewAction($container->get('view'), new CSRFTokenValidator());
@@ -88,12 +89,12 @@ class ConfigProvider
     public function routes(App $app)
     {
         $app->get('/healthcheck', HealthCheckAction::class);
-        $app->get('/todos', IndexViewAction::class);
-        $app->get('/todo/add', AddViewAction::class);
-        $app->post('/todo/add', AddAction::class);
-        $app->get('/todo/edit/{id}', EditViewAction::class);
-        $app->post('/todo/edit/{id}', EditAction::class);
-        $app->post('/todo/complete/{id}', CompleteAction::class);
-        $app->post('/todo/delete/{id}', DeleteAction::class);
+        $app->get('/todos', TodosViewAction::class);
+        $app->get('/todo', AddViewAction::class);
+        $app->post('/todo', AddAction::class);
+        $app->get('/todo/{id}', EditViewAction::class);
+        $app->patch('/todo/{id}', EditAction::class);
+        $app->map(['complete'], '/todo/{id}', CompleteAction::class);
+        $app->delete('/todo/{id}', DeleteAction::class);
     }
 }
