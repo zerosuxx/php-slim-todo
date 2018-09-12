@@ -58,14 +58,14 @@ class SessionStorageTest extends TestCase
     /**
      * @test
      */
-    public function getSourceData_ReturnsReferencedData()
+    public function getData_ReturnsReferencedData()
     {
         $_SESSION = [
             'test-key' => null
         ];
         $storage = new SessionStorage();
-        $this->assertSame($_SESSION, $storage->getSourceData());
-        $storage->getSourceData()['test'] = 'test';
+        $this->assertSame($_SESSION, $storage->getData());
+        $storage->getData()['test'] = 'test';
         $this->assertSame($_SESSION['test'], 'test');
     }
 

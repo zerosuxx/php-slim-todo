@@ -6,10 +6,8 @@ namespace TodoApp\Storage;
  * Class SessionStorage
  * @package TodoApp\Storage
  */
-class SessionStorage implements StorageInterface
+class SessionStorage extends AbstractStorage
 {
-    use StorageTrait;
-
     public function __construct()
     {
         $this->setData($_SESSION);

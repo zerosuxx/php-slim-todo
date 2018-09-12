@@ -2,7 +2,13 @@
 
 namespace TodoApp\Storage;
 
-interface StorageInterface
+use ArrayAccess;
+use Countable;
+use IteratorAggregate;
+use JsonSerializable;
+use Serializable;
+
+interface StorageInterface extends Countable, JsonSerializable, Serializable, IteratorAggregate, ArrayAccess
 {
     /**
      * @param string $key
@@ -44,7 +50,7 @@ interface StorageInterface
     /**
      * @return array returns array data reference
      */
-    public function &getSourceData();
+    public function &getData();
 
     /**
      * @return array

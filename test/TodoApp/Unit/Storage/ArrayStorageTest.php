@@ -116,4 +116,85 @@ class ArrayStorageTest extends TestCase
         $this->assertArrayNotHasKey('test', $data);
     }
 
+    /**
+     * @test
+     */
+    public function count_ReturnsArraySize()
+    {
+        $storage = new ArrayStorage(['1']);
+        $this->assertCount(1, $storage);
+        $this->assertEquals(1, $storage->count());
+    }
+
+    /**
+     * @test
+     */
+    public function jsonSerialize_ReturnsArray()
+    {
+        $storage = new ArrayStorage(['1']);
+        $this->assertEquals(['1'], $storage->jsonSerialize());
+        $this->assertEquals('["1"]', json_encode($storage));
+    }
+
+    /**
+     * @test
+     */
+    public function unserialize_ReturnsNewInstance()
+    {
+        $storage = new ArrayStorage();
+        $this->assertInstanceOf(ArrayStorage::class, unserialize(serialize($storage)));
+    }
+
+    /**
+     * @test
+     */
+    public function getIterator_ReturnsGenerator()
+    {
+        $storage = new ArrayStorage();
+        $this->assertInstanceOf(\Generator::class, $storage->getIterator());
+    }
+
+    /**
+     * @test
+     */
+    public function magicMethods_ReturnsValue()
+    {
+        $storage = new ArrayStorage();
+        $storage->testKey = 'testValue';
+        $this->assertEquals('testValue', $storage->testKey);
+        $this->assertEquals('testValue', $storage->get('testKey'));
+        $this->assertTrue(isset($storage->testKey));
+        $this->assertTrue($storage->has('testKey'));
+        unset($storage->testKey);
+        $this->assertFalse(isset($storage->testKey));
+        $this->assertFalse($storage->has('testKey'));
+    }
+
+    /**
+     * @test
+     */
+    public function arrayMethods_ReturnsValue()
+    {
+        $storage = new ArrayStorage(['testKey' => 'testValue']);
+        $storage['testKey'] = 'testValue';
+        $this->assertEquals('testValue', $storage['testKey']);
+        $this->assertEquals('testValue', $storage->testKey);
+        $this->assertEquals('testValue', $storage->get('testKey'));
+        $this->assertTrue(isset($storage['testKey']));
+        $this->assertTrue(isset($storage->testKey));
+        $this->assertTrue($storage->has('testKey'));
+        unset($storage['testKey']);
+        $this->assertFalse(isset($storage['testKey']));
+        $this->assertFalse(isset($storage->testKey));
+        $this->assertFalse($storage->has('testKey'));
+    }
+
+    /**
+     * @test
+     */
+    public function magicDebugInfo_ReturnsArray()
+    {
+        $storage = new ArrayStorage([1]);
+        $this->assertEquals([1], $storage->__debugInfo());
+    }
 }
