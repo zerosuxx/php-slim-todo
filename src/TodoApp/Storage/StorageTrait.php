@@ -1,12 +1,8 @@
 <?php
-
 namespace TodoApp\Storage;
 
-/**
- * Class Storage
- * @package TodoApp\Storage
- */
-class Storage
+
+trait StorageTrait
 {
     /**
      * @var array
@@ -14,17 +10,7 @@ class Storage
     private $data;
 
     /**
-     * @param array $data
-     */
-    public function __construct(array &$data = [])
-    {
-        $this->setData($data);
-    }
-
-    /**
-     * @param string $key
-     * @param null $default
-     * @return mixed|null
+     * {@inheritDoc}
      */
     public function &get(string $key, $default = null)
     {
@@ -35,8 +21,7 @@ class Storage
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
+     * {@inheritDoc}
      */
     public function set(string $key, $value)
     {
@@ -44,7 +29,7 @@ class Storage
     }
 
     /**
-     * @param string $key
+     * {@inheritDoc}
      */
     public function remove(string $key)
     {
@@ -54,8 +39,17 @@ class Storage
     }
 
     /**
-     * @param string $key
-     * @return bool
+     * {@inheritDoc}
+     */
+    public function &consume(string $key, $default = null)
+    {
+        $value = &$this->get($key, $default);
+        $this->remove($key);
+        return $value;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function has(string $key)
     {
@@ -63,8 +57,7 @@ class Storage
     }
 
     /**
-     * @param string $key
-     * @return bool
+     * {@inheritDoc}
      */
     public function exists(string $key)
     {
@@ -72,15 +65,15 @@ class Storage
     }
 
     /**
-     * @return array returns array data reference
+     * {@inheritDoc}
      */
-    public function &getArrayCopy()
+    public function &getSourceData()
     {
         return $this->data;
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
     public function toArray()
     {
@@ -93,17 +86,5 @@ class Storage
     protected function setData(array &$data)
     {
         $this->data = &$data;
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $default
-     * @return mixed|null
-     */
-    public function &consume(string $key, $default = null)
-    {
-        $value = &$this->get($key, $default);
-        $this->remove($key);
-        return $value;
     }
 }
