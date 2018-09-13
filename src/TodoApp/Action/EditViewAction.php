@@ -47,11 +47,12 @@ class EditViewAction
             'id' => $todo->getId(),
             'method' => 'PATCH',
         ];
-        $vars['data'] += [
+        $todoData = [
             'name' => $todo->getName(),
             'description' => $todo->getDescription(),
             'due_at' => $todo->getDueAtTimestamp(),
         ];
+        $vars['data'] += $todoData;
         return $this->view->render($response, 'edit.html.twig', $vars);
     }
 }
