@@ -3,7 +3,6 @@
 namespace Test\TodoApp\Integration;
 
 use Test\TodoApp\TodoAppTestCase;
-use Zero\Form\Validator\CSRFTokenValidator;
 
 class EditActionTest extends TodoAppTestCase
 {
@@ -14,7 +13,6 @@ class EditActionTest extends TodoAppTestCase
     public function callsEditPage_GivenValidData_Returns301()
     {
         $this->todosDao->saveTodo($this->buildTodo('Test Name', 'Test message'));
-        $_SESSION[CSRFTokenValidator::TOKEN_KEY] = 'token';
         $response = $this->runApp('PATCH', '/todo/1', [
             'name' => 'Test Name 1',
             'description' => 'Test message 1',
@@ -36,7 +34,7 @@ class EditActionTest extends TodoAppTestCase
      */
     public function callsEditPage_GivenEmptyData_Returns301()
     {
-        $storage = $this->loadArrayStorageToSession();
+        $storage = $this->getSession();
         $response = $this->runApp('PATCH', '/todo/1');
 
         $this->assertEquals(301, $response->getStatusCode());
@@ -47,7 +45,7 @@ class EditActionTest extends TodoAppTestCase
             'name' => 'Name can not be empty',
             'description' => 'Description can not be empty',
             'due_at' => 'Due At can not be empty' . "\n" . 'Wrong datetime format',
-            '_token' => 'Token mismatch',
+            '_token' => 'Token mismatch'
         ], $storage->get('errors'));
     }
 
@@ -57,7 +55,6 @@ class EditActionTest extends TodoAppTestCase
     public function callsEditPage_WithNotExistsTodo_ThrowsException()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $_SESSION[CSRFTokenValidator::TOKEN_KEY] = 'token';
         $this->runApp('PATCH', '/todo/not-exists', [
             'name' => 'Test Name 1',
             'description' => 'Test message 1',

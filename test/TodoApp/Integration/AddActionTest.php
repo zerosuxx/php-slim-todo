@@ -3,7 +3,6 @@
 namespace Test\TodoApp\Integration;
 
 use Test\TodoApp\TodoAppTestCase;
-use Zero\Form\Validator\CSRFTokenValidator;
 
 class AddActionTest extends TodoAppTestCase
 {
@@ -12,14 +11,12 @@ class AddActionTest extends TodoAppTestCase
      */
     public function callsAddPage_GivenValidData_Returns301()
     {
-        $_SESSION[CSRFTokenValidator::TOKEN_KEY] = 'token';
         $response = $this->runApp('POST', '/todo', [
             'name' => 'Test Name',
             'description' => 'Test message',
             'due_at' => '2018-09-10 10:00:00',
             '_token' => 'token'
         ]);
-
         $this->assertEquals(301, $response->getStatusCode());
 
         $todo = $this->todosDao->getTodo(1);
@@ -34,7 +31,7 @@ class AddActionTest extends TodoAppTestCase
      */
     public function callsAddPage_GivenEmptyData_Returns301()
     {
-        $storage = $this->loadArrayStorageToSession();
+        $storage = $this->getSession();
         $response = $this->runApp('POST', '/todo', []);
 
         $this->assertEquals(301, $response->getStatusCode());
@@ -45,7 +42,7 @@ class AddActionTest extends TodoAppTestCase
             'name' => 'Name can not be empty',
             'description' => 'Description can not be empty',
             'due_at' => 'Due At can not be empty' . "\n" . 'Wrong datetime format',
-            '_token' => 'Token mismatch',
+            '_token' => 'Token mismatch'
         ], $storage->get('errors'));
     }
 }

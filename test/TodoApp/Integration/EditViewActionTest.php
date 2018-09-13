@@ -38,7 +38,7 @@ class EditViewActionTest extends TodoAppTestCase
     {
         $this->todosDao->saveTodo($this->buildTodo('Test Name', 'Test message'));
 
-        $storage = $this->loadArrayStorageToSession();
+        $storage = $this->getSession();
         $storage->set('errors', ['name' => 'Invalid data']);
         $storage->set('data', ['description' => 'Test desc']);
 

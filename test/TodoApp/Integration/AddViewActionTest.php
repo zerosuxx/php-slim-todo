@@ -20,7 +20,7 @@ class AddViewActionTest extends TodoAppTestCase
      */
     public function callsAddPage_GivenErrorsAndData_Returns200WithErrorsAndData()
     {
-        $storage = $this->loadArrayStorageToSession();
+        $storage = $this->getSession();
         $storage->set('errors', ['name' => 'Invalid data']);
         $storage->set('data', ['description' => 'Test desc']);
         $response = $this->runApp('GET', '/todo');
