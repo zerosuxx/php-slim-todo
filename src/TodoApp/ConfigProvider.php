@@ -25,7 +25,6 @@ use Zero\Form\Validator\CSRFTokenValidator;
  */
 class ConfigProvider
 {
-    const FORMAT_DATETIME = 'Y-m-d H:i:s';
 
     public function __invoke(App $app)
     {
