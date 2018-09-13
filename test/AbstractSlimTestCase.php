@@ -34,6 +34,10 @@ abstract class AbstractSlimTestCase extends TestCase
      */
     abstract protected function addProvider(AppBuilder $appBuilder);
 
+    protected function initializeApp(App $app) {
+
+    }
+
     /**
      * @param $disable
      */
@@ -51,6 +55,7 @@ abstract class AbstractSlimTestCase extends TestCase
             $appBuilder = new AppBuilder();
             $this->addProvider($appBuilder);
             $this->app = $appBuilder->buildApp();
+            $this->initializeApp($this->app);
         }
         return $this->app;
     }
