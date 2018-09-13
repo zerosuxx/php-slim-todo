@@ -35,7 +35,7 @@ class ConfigProvider
 
     public function config(ContainerInterface $container)
     {
-        $container['settings']['displayErrorDetails'] = true;
+        $container['settings']['displayErrorDetails'] = (bool)getenv('DEBUG');
     }
 
     public function dependencies(ContainerInterface $container)
@@ -72,7 +72,7 @@ class ConfigProvider
             return new HealthCheckAction($container->get('pdo'));
         };
         $container[TodosViewAction::class] = function (ContainerInterface $container) {
-            return new TodosViewAction($container->get(TodosDao::class), $container->get('view'));
+            return new TodosViewAction($container->get(TodosDao::class), $container->get('view'), $container->get('csrf'));
         };
         $container[AddViewAction::class] = function (ContainerInterface $container) {
             return new AddViewAction($container->get('view'), $container->get('csrf'), $container->get('session'));
@@ -92,10 +92,10 @@ class ConfigProvider
             return new EditAction($container->get(TodosDao::class), $container->get(TodoForm::class), $container->get('session'));
         };
         $container[CompleteAction::class] = function (ContainerInterface $container) {
-            return new CompleteAction($container->get(TodosDao::class));
+            return new CompleteAction($container->get(TodosDao::class), $container->get('csrf'));
         };
         $container[DeleteAction::class] = function (ContainerInterface $container) {
-            return new DeleteAction($container->get(TodosDao::class));
+            return new DeleteAction($container->get(TodosDao::class), $container->get('csrf'));
         };
     }
 
