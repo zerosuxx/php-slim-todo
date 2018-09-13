@@ -15,7 +15,7 @@ use Zero\Form\Validator\ValidatorChain;
  */
 class TodoForm extends Form
 {
-    public function __construct()
+    public function __construct(CSRFTokenValidator $csrf)
     {
         $dateValidator = new ValidatorChain();
         $dateValidator
@@ -25,6 +25,6 @@ class TodoForm extends Form
         $this->input('name', new StringFilter(), new EmptyValidator('Name'));
         $this->input('description', new StringFilter(), new EmptyValidator('Description'));
         $this->input('due_at', new StringFilter(), $dateValidator);
-        $this->input('_token', new StringFilter(), new CSRFTokenValidator());
+        $this->input('_token', new StringFilter(), $csrf);
     }
 }
