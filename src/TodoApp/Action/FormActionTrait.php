@@ -16,7 +16,9 @@ trait FormActionTrait
             return $response->withRedirect('/todos', 301);
         } else {
             $storage->set('errors', $form->getErrors());
-            $storage->set('data', $form->getValidData());
+            $validData = $form->getValidData();
+            unset($validData['_token']);
+            $storage->set('data', $validData);
             return $response->withRedirect($request->getHeaderLine('referer'), 301);
         }
     }
