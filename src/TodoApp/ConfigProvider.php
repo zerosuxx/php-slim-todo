@@ -59,6 +59,12 @@ class ConfigProvider
         $container['session'] = function () {
             return new SessionStorage();
         };
+        $container['csrf'] = function () {
+            return new CSRFTokenValidator();
+        };
+        $container[TodoForm::class] = function (ContainerInterface $container) {
+            return new TodoForm($container->get('csrf'));
+        };
         $container[TodosDao::class] = function (ContainerInterface $container) {
             return new TodosDao($container->get('pdo'));
         };
@@ -69,21 +75,21 @@ class ConfigProvider
             return new TodosViewAction($container->get(TodosDao::class), $container->get('view'));
         };
         $container[AddViewAction::class] = function (ContainerInterface $container) {
-            return new AddViewAction($container->get('view'), new CSRFTokenValidator(), $container->get('session'));
+            return new AddViewAction($container->get('view'), $container->get('csrf'), $container->get('session'));
         };
         $container[AddAction::class] = function (ContainerInterface $container) {
-            return new AddAction($container->get(TodosDao::class), new TodoForm(), $container->get('session'));
+            return new AddAction($container->get(TodosDao::class), $container->get(TodoForm::class), $container->get('session'));
         };
         $container[EditViewAction::class] = function (ContainerInterface $container) {
             return new EditViewAction(
                 $container->get(TodosDao::class),
                 $container->get('view'),
-                new CSRFTokenValidator(),
+                $container->get('csrf'),
                 $container->get('session')
             );
         };
         $container[EditAction::class] = function (ContainerInterface $container) {
-            return new EditAction($container->get(TodosDao::class), new TodoForm(), $container->get('session'));
+            return new EditAction($container->get(TodosDao::class), $container->get(TodoForm::class), $container->get('session'));
         };
         $container[CompleteAction::class] = function (ContainerInterface $container) {
             return new CompleteAction($container->get(TodosDao::class));
