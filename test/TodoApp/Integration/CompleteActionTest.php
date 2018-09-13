@@ -3,7 +3,6 @@
 namespace Test\TodoApp\Integration;
 
 use Test\TodoApp\TodoAppTestCase;
-use TodoApp\Entity\Todo;
 
 class CompleteActionTest extends TodoAppTestCase
 {
@@ -14,7 +13,7 @@ class CompleteActionTest extends TodoAppTestCase
     public function callsCompletePage_GivenValidData_Returns301()
     {
         $this->todosDao->saveTodo($this->buildTodo('Test Name', 'Test message'));
-        $response = $this->runApp('COMPLETE', '/todo/1');
+        $response = $this->runApp('COMPLETE', '/todo/1', ['_token' => 'token']);
 
         $this->assertEquals(301, $response->getStatusCode());
 
@@ -29,6 +28,6 @@ class CompleteActionTest extends TodoAppTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $this->runApp('COMPLETE', '/todo/not-exists');
+        $this->runApp('COMPLETE', '/todo/not-exists', ['_token' => 'token']);
     }
 }

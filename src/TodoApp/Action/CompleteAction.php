@@ -5,6 +5,7 @@ namespace TodoApp\Action;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use TodoApp\Dao\TodosDao;
+use Zero\Form\Validator\CSRFTokenValidator;
 
 /**
  * Class CompleteAction
@@ -17,13 +18,20 @@ class CompleteAction
      */
     private $dao;
 
-    public function __construct(TodosDao $dao)
+    /**
+     * @var CSRFTokenValidator
+     */
+    private $csrf;
+
+    public function __construct(TodosDao $dao, CSRFTokenValidator $csrf)
     {
         $this->dao = $dao;
+        $this->csrf = $csrf;
     }
 
     public function __invoke(Request $request, Response $response, array $args)
     {
+        $this->csrf->validate($request->getParsedBodyParam('_token'));
         $id = (int)$args['id'];
         $todo = $this->dao->getTodo($id);
         $this->dao->completeTodo($todo);

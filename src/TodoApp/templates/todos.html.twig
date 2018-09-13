@@ -10,8 +10,8 @@
                 <td>{{ todo.getDescription() }}</td>
                 <td>{{ todo.getDueAtTimestamp() }}</td>
                 <td><a href="/todo/{{ todo.getId() }}" class="btn btn-info">Edit</a></td>
-                <td><form method="POST" action="/todo/{{ todo.getId() }}"><input type="hidden" name="_METHOD" value="COMPLETE"><input type="submit" value="Complete" class="btn btn-success"></form></td>
-                <td><form method="POST" action="/todo/{{ todo.getId() }}"><input type="hidden" name="_METHOD" value="DELETE"><input type="submit" value="Delete" class="btn btn-danger"></form></td></tr>
+                <td><form method="POST" action="/todo/{{ todo.getId() }}"><input type="hidden" name="_METHOD" value="COMPLETE"><input type="hidden" name="_token" value="{{ token }}"><input type="submit" value="Complete" class="btn btn-success"></form></td>
+                <td><form method="POST" action="/todo/{{ todo.getId() }}"><input type="hidden" name="_METHOD" value="DELETE"><input type="hidden" name="_token" value="{{ token }}"><input type="submit" value="Delete" class="btn btn-danger"></form></td></tr>
         {% endfor %}
     </table>
 {% endblock %}
