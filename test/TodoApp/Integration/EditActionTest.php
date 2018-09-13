@@ -3,7 +3,6 @@
 namespace Test\TodoApp\Integration;
 
 use Test\TodoApp\TodoAppTestCase;
-use TodoApp\Entity\Todo;
 use Zero\Form\Validator\CSRFTokenValidator;
 
 class EditActionTest extends TodoAppTestCase
@@ -14,7 +13,7 @@ class EditActionTest extends TodoAppTestCase
      */
     public function callsEditPage_GivenValidData_Returns301()
     {
-        $this->todosDao->saveTodo(new Todo('Test Name', 'Test message', 'incomplete', new \DateTime()));
+        $this->todosDao->saveTodo($this->buildTodo('Test Name', 'Test message'));
         $_SESSION[CSRFTokenValidator::TOKEN_KEY] = 'token';
         $response = $this->runApp('PATCH', '/todo/1', [
             'name' => 'Test Name 1',
@@ -29,7 +28,7 @@ class EditActionTest extends TodoAppTestCase
         $this->assertEquals('Test Name 1', $todo->getName());
         $this->assertEquals('Test message 1', $todo->getDescription());
         $this->assertEquals('incomplete', $todo->getStatus());
-        $this->assertEquals('2019-09-10 10:00:00', $todo->getDueAt()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2019-09-10 10:00:00', $todo->getDueAtTimestamp());
     }
 
     /**
@@ -37,6 +36,7 @@ class EditActionTest extends TodoAppTestCase
      */
     public function callsEditPage_GivenEmptyData_Returns301()
     {
+        $storage = $this->loadArrayStorageToSession();
         $response = $this->runApp('PATCH', '/todo/1');
 
         $this->assertEquals(301, $response->getStatusCode());
@@ -48,7 +48,7 @@ class EditActionTest extends TodoAppTestCase
             'description' => 'Description can not be empty',
             'due_at' => 'Due At can not be empty' . "\n" . 'Wrong datetime format',
             '_token' => 'Token mismatch',
-        ], $_SESSION['errors']);
+        ], $storage->get('errors'));
     }
 
     /**

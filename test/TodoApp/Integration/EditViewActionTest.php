@@ -2,8 +2,8 @@
 
 namespace Test\TodoApp\Integration;
 
+use InvalidArgumentException;
 use Test\TodoApp\TodoAppTestCase;
-use TodoApp\Entity\Todo;
 
 class EditViewActionTest extends TodoAppTestCase
 {
@@ -13,7 +13,7 @@ class EditViewActionTest extends TodoAppTestCase
      */
     public function callsEditPage_Returns200()
     {
-        $this->todosDao->saveTodo(new Todo('Test Name', 'Test message', 'incomplete', new \DateTime()));
+        $this->todosDao->saveTodo($this->buildTodo('Test Name', 'Test message'));
         $response = $this->runApp('GET', '/todo/1');
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('PATCH', (string)$response->getBody());
@@ -27,7 +27,7 @@ class EditViewActionTest extends TodoAppTestCase
      */
     public function callsEditPage_WithNotExistsTodo_ThrowsException()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->runApp('GET', '/todo/not-exists');
     }
 
@@ -36,14 +36,17 @@ class EditViewActionTest extends TodoAppTestCase
      */
     public function callsEditPage_GivenErrorsAndData_Returns200WithErrorsAndData()
     {
-        $this->todosDao->saveTodo(new Todo('Test Name', 'Test message', 'incomplete', new \DateTime()));
-        $_SESSION['errors'] = ['name' => 'Invalid data'];
-        $_SESSION['data'] = ['description' => 'Test desc'];
+        $this->todosDao->saveTodo($this->buildTodo('Test Name', 'Test message'));
+
+        $storage = $this->loadArrayStorageToSession();
+        $storage->set('errors', ['name' => 'Invalid data']);
+        $storage->set('data', ['description' => 'Test desc']);
+
         $response = $this->runApp('GET', '/todo/1');
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('Invalid data', (string)$response->getBody());
         $this->assertContains('Test desc', (string)$response->getBody());
-        $this->assertArrayNotHasKey('errors', $_SESSION);
-        $this->assertArrayNotHasKey('data', $_SESSION);
+        $this->assertFalse($storage->has('errors'));
+        $this->assertFalse($storage->has('data'));
     }
 }

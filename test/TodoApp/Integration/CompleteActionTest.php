@@ -13,7 +13,7 @@ class CompleteActionTest extends TodoAppTestCase
      */
     public function callsCompletePage_GivenValidData_Returns301()
     {
-        $this->todosDao->saveTodo(new Todo('Test Name', 'Test message', 'incomplete', new \DateTime()));
+        $this->todosDao->saveTodo($this->buildTodo('Test Name', 'Test message'));
         $response = $this->runApp('COMPLETE', '/todo/1');
 
         $this->assertEquals(301, $response->getStatusCode());

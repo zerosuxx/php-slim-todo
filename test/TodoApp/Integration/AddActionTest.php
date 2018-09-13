@@ -26,7 +26,7 @@ class AddActionTest extends TodoAppTestCase
         $this->assertEquals('Test Name', $todo->getName());
         $this->assertEquals('Test message', $todo->getDescription());
         $this->assertEquals('incomplete', $todo->getStatus());
-        $this->assertEquals('2018-09-10 10:00:00', $todo->getDueAt()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-09-10 10:00:00', $todo->getDueAtTimestamp());
     }
 
     /**
@@ -34,6 +34,7 @@ class AddActionTest extends TodoAppTestCase
      */
     public function callsAddPage_GivenEmptyData_Returns301()
     {
+        $storage = $this->loadArrayStorageToSession();
         $response = $this->runApp('POST', '/todo', []);
 
         $this->assertEquals(301, $response->getStatusCode());
@@ -45,6 +46,6 @@ class AddActionTest extends TodoAppTestCase
             'description' => 'Description can not be empty',
             'due_at' => 'Due At can not be empty' . "\n" . 'Wrong datetime format',
             '_token' => 'Token mismatch',
-        ], $_SESSION['errors']);
+        ], $storage->get('errors'));
     }
 }

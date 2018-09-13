@@ -2,10 +2,8 @@
 
 namespace Test\TodoApp\Integration;
 
-use DateTime;
 use InvalidArgumentException;
 use Test\TodoApp\TodoAppTestCase;
-use TodoApp\Entity\Todo;
 
 class DeleteActionTest extends TodoAppTestCase
 {
@@ -15,7 +13,7 @@ class DeleteActionTest extends TodoAppTestCase
      */
     public function callsDeletePage_GivenValidData_Returns301()
     {
-        $this->todosDao->saveTodo(new Todo('Test Name', 'Test message', 'incomplete', new DateTime()));
+        $this->todosDao->saveTodo($this->buildTodo('Test Name', 'Test message'));
         $response = $this->runApp('DELETE', '/todo/1');
 
         $this->assertEquals(301, $response->getStatusCode());

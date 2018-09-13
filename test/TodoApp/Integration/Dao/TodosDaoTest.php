@@ -25,7 +25,7 @@ class TodosDaoTest extends TodoAppTestCase
         $this->assertEquals('Test name', $todo->getName());
         $this->assertEquals('test desc', $todo->getDescription());
         $this->assertEquals('incomplete', $todo->getStatus());
-        $this->assertEquals('2018-09-07 10:00:00', $todo->getDueAt()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-09-07 10:00:00', $todo->getDueAtTimestamp());
     }
 
     /**
@@ -42,7 +42,7 @@ class TodosDaoTest extends TodoAppTestCase
      */
     public function saveTodo_EmptyDatabase_ReturnsInsertedTodo()
     {
-        $todo = new Todo('name', 'desc', 'incomplete', new \DateTime('2018-09-07 10:00:00'));
+        $todo = $this->buildTodo('name', 'desc', new \DateTime('2018-09-07 10:00:00'));
 
         $savedTodo = $this->todosDao->saveTodo($todo);
 
@@ -59,9 +59,9 @@ class TodosDaoTest extends TodoAppTestCase
     public function getTodos_GivenExistingRecords_ReturnsTodos()
     {
         $records = [
-            new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-07 10:00:00')),
-            new Todo('name 2', 'desc 2', 'incomplete', new \DateTime('2018-09-07 10:00:00')),
-            new Todo('name 3', 'desc 3', 'incomplete', new \DateTime('2018-09-07 10:00:00'))
+            $this->buildTodo('name 1', 'desc 1', new \DateTime('2018-09-07 10:00:00')),
+            $this->buildTodo('name 2', 'desc 2', new \DateTime('2018-09-07 10:00:00')),
+            $this->buildTodo('name 3', 'desc 3', new \DateTime('2018-09-07 10:00:00'))
         ];
 
         $savedRecords = [];
@@ -80,9 +80,9 @@ class TodosDaoTest extends TodoAppTestCase
     public function getTodos_GivenExistingRecords_ReturnsInCompletedTodos()
     {
         $records = [
-            new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-07 10:00:00')),
-            new Todo('name 2', 'desc 2', 'incomplete', new \DateTime('2018-09-07 10:00:00')),
-            new Todo('name 3', 'desc 3', 'complete', new \DateTime('2018-09-07 10:00:00'))
+            $this->buildTodo('name 1', 'desc 1', new \DateTime('2018-09-07 10:00:00')),
+            $this->buildTodo('name 2', 'desc 2', new \DateTime('2018-09-07 10:00:00')),
+            $this->buildTodo('name 3', 'desc 3', new \DateTime('2018-09-07 10:00:00'), Todo::STATUS_COMPLETE)
         ];
 
         $savedRecords = [];
@@ -102,11 +102,11 @@ class TodosDaoTest extends TodoAppTestCase
      */
     public function updateTodo_GivenExistingTodo_UpdatesTodo()
     {
-        $todoToSave = new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-09 10:00:00'));
+        $todoToSave = $this->buildTodo('name 1', 'desc 1', new \DateTime('2018-09-09 10:00:00'));
 
         $this->todosDao->saveTodo($todoToSave);
 
-        $todoToModify = new Todo('name 2', 'desc 2', 'complete', new \DateTime('2019-09-09 10:00:00'), 1);
+        $todoToModify = $this->buildTodo('name 2', 'desc 2', new \DateTime('2019-09-09 10:00:00'), Todo::STATUS_COMPLETE, 1);
 
         $updated = $this->todosDao->updateTodo($todoToModify);
 
@@ -124,7 +124,7 @@ class TodosDaoTest extends TodoAppTestCase
      */
     public function updateTodoStatus_GivenExistingTodo_UpdatesTodoStatus()
     {
-        $newTodo = new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-09 10:00:00'));
+        $newTodo = $this->buildTodo('name 1', 'desc 1', new \DateTime('2018-09-09 10:00:00'));
 
         $savedTodo = $this->todosDao->saveTodo($newTodo);
 
@@ -141,7 +141,7 @@ class TodosDaoTest extends TodoAppTestCase
      */
     public function deleteTodo_GivenExistingTodo_DeletesTodo()
     {
-        $newTodo = new Todo('name 1', 'desc 1', 'incomplete', new \DateTime('2018-09-09 10:00:00'));
+        $newTodo = $this->buildTodo('name 1', 'desc 1', new \DateTime('2018-09-09 10:00:00'));
 
         $savedTodo = $this->todosDao->saveTodo($newTodo);
 
@@ -169,7 +169,7 @@ class TodosDaoTest extends TodoAppTestCase
         $this->assertEquals($todoData['name'], $todo->getName());
         $this->assertEquals($todoData['description'], $todo->getDescription());
         $this->assertEquals($todoData['status'], $todo->getStatus());
-        $this->assertEquals($todoData['due_at'], $todo->getDueAt()->format('Y-m-d H:i:s'));
+        $this->assertEquals($todoData['due_at'], $todo->getDueAtTimestamp());
         $this->assertNull($todo->getId());
     }
 
