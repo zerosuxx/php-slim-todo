@@ -1236,16 +1236,16 @@
         },
         {
             "name": "zer0php/storage",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zer0php/storage.git",
-                "reference": "dc88618e6220ca818a7457529d5fb612f424a151"
+                "reference": "cd0a019fdc13345bd5c0d7a57f66188280119d50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zer0php/storage/zipball/dc88618e6220ca818a7457529d5fb612f424a151",
-                "reference": "dc88618e6220ca818a7457529d5fb612f424a151",
+                "url": "https://api.github.com/repos/zer0php/storage/zipball/cd0a019fdc13345bd5c0d7a57f66188280119d50",
+                "reference": "cd0a019fdc13345bd5c0d7a57f66188280119d50",
                 "shasum": ""
             },
             "require": {
@@ -1272,7 +1272,7 @@
                 }
             ],
             "description": "Store array data in Storage object",
-            "time": "2018-09-13T15:28:24+00:00"
+            "time": "2018-09-13T15:36:56+00:00"
         }
     ],
     "packages-dev": [
