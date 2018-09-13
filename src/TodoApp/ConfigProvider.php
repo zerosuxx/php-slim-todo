@@ -17,8 +17,8 @@ use TodoApp\Action\HealthCheckAction;
 use TodoApp\Action\TodosViewAction;
 use TodoApp\Dao\TodosDao;
 use TodoApp\Form\TodoForm;
-use TodoApp\Storage\SessionStorage;
 use Zero\Form\Validator\CSRFTokenValidator;
+use Zero\Storage\SessionStorage;
 
 /**
  * Class ConfigProvider

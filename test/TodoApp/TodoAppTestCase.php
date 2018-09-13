@@ -8,7 +8,7 @@ use Test\AbstractSlimTestCase;
 use TodoApp\ConfigProvider;
 use TodoApp\Dao\TodosDao;
 use TodoApp\Entity\Todo;
-use TodoApp\Storage\ArrayStorage;
+use Zero\Storage\ArrayStorage;
 
 /**
  * Class TodoAppTestCase
