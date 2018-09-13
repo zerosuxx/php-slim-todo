@@ -119,8 +119,8 @@ class TodosDao
         }
         $statement->bindParam('name', $todo->getName());
         $statement->bindParam('description', $todo->getDescription());
+        $statement->bindParam('due_at', $todo->getDueAtTimestamp());
         $statement->bindParam('status', $todo->getStatus());
-        $statement->bindParam('due_at', $todo->getDueAt()->format('Y-m-d H:i:s'));
         return $statement;
     }
 
@@ -133,8 +133,8 @@ class TodosDao
         return new Todo(
             $todoData['name'],
             $todoData['description'],
-            $todoData['status'],
             new DateTime($todoData['due_at']),
+            $todoData['status'],
             $todoData['id']
         );
     }
