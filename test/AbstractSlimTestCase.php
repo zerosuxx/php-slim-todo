@@ -6,6 +6,7 @@ use PDO;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
 use Slim\App;
+use Slim\Container;
 use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -114,5 +115,21 @@ abstract class AbstractSlimTestCase extends TestCase
             unset($container['phpErrorHandler']);
         }
         return $app->process($request, new Response());
+    }
+
+    /**
+     * @param Container $container
+     * @param $name
+     * @param $mock
+     * @param string $prefix [optional] default: original_
+     */
+    protected function mockService(Container $container, $name, $mock, $prefix = 'original_')
+    {
+        if (isset($container[$name])) {
+            $service = $container[$name];
+            unset($container[$name]);
+            $container[$prefix . $name] = $service;
+        }
+        $container[$name] = $mock;
     }
 }

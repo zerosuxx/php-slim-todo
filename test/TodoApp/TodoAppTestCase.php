@@ -4,7 +4,6 @@ namespace Test\TodoApp;
 
 use DateTime;
 use Slim\App;
-use Slim\Container;
 use SlimSkeleton\AppBuilder;
 use Test\AbstractSlimTestCase;
 use TodoApp\ConfigProvider;
@@ -25,7 +24,8 @@ class TodoAppTestCase extends AbstractSlimTestCase
      */
     protected $todosDao;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->truncateTable('todos');
         $this->todosDao = new TodosDao($this->getPDO());
@@ -45,21 +45,21 @@ class TodoAppTestCase extends AbstractSlimTestCase
     protected function initializeApp(App $app)
     {
         parent::initializeApp($app);
-        $mock = $this->createMock(CSRFTokenValidator::class);
-
-        $mock->method('validate')
-            ->willReturnCallback(function($token) {
-                if($token !== 'token') {
+        $csrfMock = $this->createMock(CSRFTokenValidator::class);
+        $csrfMock->method('validate')
+            ->willReturnCallback(function ($token) {
+                if ($token !== 'token') {
                     throw new ValidationException('Token mismatch');
                 }
             });
 
         $container = $app->getContainer();
-        $this->mockService($container, 'csrf', $mock);
+        $this->mockService($container, 'csrf', $csrfMock);
         $this->mockService($container, 'session', new ArrayStorage());
     }
 
-    protected function getSession(): StorageInterface {
+    protected function getSession(): StorageInterface
+    {
         return $this->getService('session');
     }
 
@@ -69,16 +69,7 @@ class TodoAppTestCase extends AbstractSlimTestCase
         DateTime $dueAt = null,
         $status = Todo::STATUS_INCOMPLETE,
         $id = null
-    ): Todo  {
+    ): Todo {
         return new Todo($name, $description, $dueAt ?: new \DateTime(), $status, $id);
-    }
-
-    private function mockService(Container $container, $name, $mock) {
-        if(isset($container[$name])) {
-            $service = $container[$name];
-            unset($container[$name]);
-            $container['original_' .$name] = $service;
-        }
-        $container[$name] = $mock;
     }
 }
