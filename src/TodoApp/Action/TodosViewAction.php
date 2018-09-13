@@ -7,11 +7,7 @@ use Slim\Http\Response;
 use Slim\Views\Twig;
 use TodoApp\Dao\TodosDao;
 
-/**
- * Class IndexViewAction
- * @package TodoApp\Action
- */
-class IndexViewAction
+class TodosViewAction
 {
     /**
      * @var TodosDao
@@ -31,7 +27,7 @@ class IndexViewAction
 
     public function __invoke(Request $request, Response $response)
     {
-        return $this->view->render($response, 'index.html.twig', [
+        return $this->view->render($response, 'todos.html.twig', [
             'todos' => $this->dao->getTodos()
         ]);
     }
