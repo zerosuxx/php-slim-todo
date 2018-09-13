@@ -4,6 +4,7 @@ namespace Test\TodoApp;
 
 use DateTime;
 use Slim\App;
+use Slim\Container;
 use SlimSkeleton\AppBuilder;
 use Test\AbstractSlimTestCase;
 use TodoApp\ConfigProvider;
@@ -54,8 +55,8 @@ class TodoAppTestCase extends AbstractSlimTestCase
             });
 
         $container = $app->getContainer();
-        $container['csrf'] = $mock;
-        $container['session'] = new ArrayStorage();
+        $this->mockService($container, 'csrf', $mock);
+        $this->mockService($container, 'session', new ArrayStorage());
     }
 
     protected function getSession(): StorageInterface {
@@ -70,5 +71,14 @@ class TodoAppTestCase extends AbstractSlimTestCase
         $id = null
     ): Todo  {
         return new Todo($name, $description, $dueAt ?: new \DateTime(), $status, $id);
+    }
+
+    private function mockService(Container $container, $name, $mock) {
+        if(isset($container[$name])) {
+            $service = $container[$name];
+            unset($container[$name]);
+            $container['original_' .$name] = $service;
+        }
+        $container[$name] = $mock;
     }
 }
