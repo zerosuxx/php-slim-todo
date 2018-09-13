@@ -14,7 +14,6 @@ use TodoApp\Action\DeleteAction;
 use TodoApp\Action\EditAction;
 use TodoApp\Action\EditViewAction;
 use TodoApp\Action\HealthCheckAction;
-use TodoApp\Action\ListViewAction;
 use TodoApp\Action\TodosViewAction;
 use TodoApp\Dao\TodosDao;
 use TodoApp\Form\TodoForm;
@@ -71,16 +70,21 @@ class ConfigProvider
             return new TodosViewAction($container->get(TodosDao::class), $container->get('view'));
         };
         $container[AddViewAction::class] = function (ContainerInterface $container) {
-            return new AddViewAction($container->get('view'), new CSRFTokenValidator());
+            return new AddViewAction($container->get('view'), new CSRFTokenValidator(), $container->get('session'));
         };
         $container[AddAction::class] = function (ContainerInterface $container) {
-            return new AddAction($container->get(TodosDao::class), new TodoForm());
+            return new AddAction($container->get(TodosDao::class), new TodoForm(), $container->get('session'));
         };
         $container[EditViewAction::class] = function (ContainerInterface $container) {
-            return new EditViewAction($container->get(TodosDao::class), $container->get('view'), new CSRFTokenValidator());
+            return new EditViewAction(
+                $container->get(TodosDao::class),
+                $container->get('view'),
+                new CSRFTokenValidator(),
+                $container->get('session')
+            );
         };
         $container[EditAction::class] = function (ContainerInterface $container) {
-            return new EditAction($container->get(TodosDao::class), new TodoForm());
+            return new EditAction($container->get(TodosDao::class), new TodoForm(), $container->get('session'));
         };
         $container[CompleteAction::class] = function (ContainerInterface $container) {
             return new CompleteAction($container->get(TodosDao::class));
