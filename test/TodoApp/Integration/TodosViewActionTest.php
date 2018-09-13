@@ -3,7 +3,6 @@
 namespace Test\TodoApp\Integration;
 
 use Test\TodoApp\TodoAppTestCase;
-use TodoApp\Entity\Todo;
 
 class TodosViewActionTest extends TodoAppTestCase
 {
