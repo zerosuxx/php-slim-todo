@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d0b53a517cedab0d357a22e53e8c1af",
+    "content-hash": "21ba32d2dae53a453195481896c8df0b",
     "packages": [
         {
             "name": "cakephp/cache",
@@ -1233,6 +1233,46 @@
             ],
             "description": "Basic Request Data Handler",
             "time": "2018-09-12T12:07:21+00:00"
+        },
+        {
+            "name": "zer0php/storage",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zer0php/storage.git",
+                "reference": "128ba41b97bec1d1a9e39d89936980baf7a92702"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zer0php/storage/zipball/128ba41b97bec1d1a9e39d89936980baf7a92702",
+                "reference": "128ba41b97bec1d1a9e39d89936980baf7a92702",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 7.1"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^7.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Zero\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mohos Tamás",
+                    "email": "tomi@mohos.name"
+                }
+            ],
+            "description": "Store array data in Storage object",
+            "time": "2018-09-13T11:23:04+00:00"
         }
     ],
     "packages-dev": [
