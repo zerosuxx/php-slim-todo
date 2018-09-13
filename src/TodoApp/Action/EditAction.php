@@ -6,7 +6,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use TodoApp\Dao\TodosDao;
 use TodoApp\Form\TodoForm;
-use TodoApp\Storage\StorageInterface;
+use Zero\Storage\StorageInterface;
 
 /**
  * Class EditAction
@@ -14,6 +14,7 @@ use TodoApp\Storage\StorageInterface;
  */
 class EditAction
 {
+    use FormActionTrait;
     /**
      * @var TodosDao
      */
@@ -36,20 +37,17 @@ class EditAction
 
     public function __invoke(Request $request, Response $response, array $args)
     {
-        if ($this->form->handle($request)->isValid()) {
-            $todo = $this->todosDao->getTodo((int)$args['id']);
+        return $this->handle($this->form, $this->storage, $request, $response, $args);
+    }
 
-            $data = $this->form->handle($request)->getData();
-            $data['id'] = $todo->getId();
-            $data['status'] = $todo->getStatus();
+    protected function handleValidData(array $data, array $args)
+    {
+        $todo = $this->todosDao->getTodo((int)$args['id']);
 
-            $todo = $this->todosDao->createTodoFromArray($data);
-            $this->todosDao->updateTodo($todo);
-            return $response->withRedirect('/todos', 301);
-        } else {
-            $this->storage->set('errors', $this->form->getErrors());
-            $this->storage->set('data', $this->form->getValidData());
-            return $response->withRedirect($request->getHeaderLine('referer'), 301);
-        }
+        $data['id'] = $todo->getId();
+        $data['status'] = $todo->getStatus();
+
+        $todo = $this->todosDao->createTodoFromArray($data);
+        $this->todosDao->updateTodo($todo);
     }
 }

@@ -6,11 +6,12 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
 use TodoApp\Dao\TodosDao;
-use TodoApp\Storage\StorageInterface;
 use Zero\Form\Validator\CSRFTokenValidator;
+use Zero\Storage\StorageInterface;
 
 class EditViewAction
 {
+    use ViewActionTrait;
     /**
      * @var TodosDao
      */
@@ -40,21 +41,17 @@ class EditViewAction
 
     public function __invoke(Request $request, Response $response, array $args)
     {
-        $id = (int)$args['id'];
-        $todo = $this->dao->getTodo($id);
-        $data = $this->storage->consume('data', []);
-        $data += [
+        $todo = $this->dao->getTodo((int)$args['id']);
+        $vars = $this->getTemplateVars($this->csrf, $this->storage);
+        $vars += [
+            'id' => $todo->getId(),
+            'method' => 'PATCH',
+        ];
+        $vars['data'] += [
             'name' => $todo->getName(),
             'description' => $todo->getDescription(),
             'due_at' => $todo->getDueAtTimestamp(),
         ];
-        $data['token'] = $this->csrf->getToken();
-        $errors = $this->storage->consume('errors', []);
-        return $this->view->render($response, 'edit.html.twig', [
-            'id' => $id,
-            'method' => 'PATCH',
-            'data' => $data,
-            'errors' => $errors
-        ]);
+        return $this->view->render($response, 'edit.html.twig', $vars);
     }
 }

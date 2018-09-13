@@ -7,7 +7,7 @@ use Slim\Http\Response;
 use TodoApp\Dao\TodosDao;
 use TodoApp\Entity\Todo;
 use TodoApp\Form\TodoForm;
-use TodoApp\Storage\StorageInterface;
+use Zero\Storage\StorageInterface;
 
 /**
  * Class AddAction
@@ -15,14 +15,18 @@ use TodoApp\Storage\StorageInterface;
  */
 class AddAction
 {
+    use FormActionTrait;
+
     /**
      * @var TodosDao
      */
     private $dao;
+
     /**
      * @var TodoForm
      */
     private $form;
+
     /**
      * @var StorageInterface
      */
@@ -35,18 +39,15 @@ class AddAction
         $this->storage = $storage;
     }
 
-    public function __invoke(Request $request, Response $response)
+    public function __invoke(Request $request, Response $response, array $args)
     {
-        if ($this->form->handle($request)->isValid()) {
-            $data = $this->form->getData();
-            $data['status'] = Todo::STATUS_INCOMPLETE;
-            $todo = $this->dao->createTodoFromArray($data);
-            $this->dao->saveTodo($todo);
-            return $response->withRedirect('/todos', 301);
-        } else {
-            $this->storage->set('errors', $this->form->getErrors());
-            $this->storage->set('data', $this->form->getValidData());
-            return $response->withRedirect($request->getHeaderLine('referer'), 301);
-        }
+        return $this->handle($this->form, $this->storage, $request, $response, $args);
+    }
+
+    protected function handleValidData(array $data, array $args)
+    {
+        $data['status'] = Todo::STATUS_INCOMPLETE;
+        $todo = $this->dao->createTodoFromArray($data);
+        $this->dao->saveTodo($todo);
     }
 }
