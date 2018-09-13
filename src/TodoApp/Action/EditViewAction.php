@@ -5,8 +5,8 @@ namespace TodoApp\Action;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
-use TodoApp\ConfigProvider;
 use TodoApp\Dao\TodosDao;
+use TodoApp\Storage\StorageInterface;
 use Zero\Form\Validator\CSRFTokenValidator;
 
 class EditViewAction
@@ -25,43 +25,36 @@ class EditViewAction
      * @var CSRFTokenValidator
      */
     private $csrf;
+    /**
+     * @var StorageInterface
+     */
+    private $storage;
 
-    public function __construct(TodosDao $dao, Twig $view, CSRFTokenValidator $csrf)
+    public function __construct(TodosDao $dao, Twig $view, CSRFTokenValidator $csrf, StorageInterface $storage)
     {
         $this->dao = $dao;
         $this->view = $view;
         $this->csrf = $csrf;
+        $this->storage = $storage;
     }
 
     public function __invoke(Request $request, Response $response, array $args)
     {
         $id = (int)$args['id'];
         $todo = $this->dao->getTodo($id);
-        $data = $this->consumeSessionData('data', []) + [
+        $data = $this->storage->consume('data', []);
+        $data += [
             'name' => $todo->getName(),
             'description' => $todo->getDescription(),
-            'due_at' => $todo->getDueAt()->format(ConfigProvider::FORMAT_DATETIME),
+            'due_at' => $todo->getDueAtTimestamp(),
         ];
         $data['token'] = $this->csrf->getToken();
-        $errors = $this->consumeSessionData('errors', []);
+        $errors = $this->storage->consume('errors', []);
         return $this->view->render($response, 'edit.html.twig', [
-            'action' => '/todo/edit/' . $id,
+            'id' => $id,
+            'method' => 'PATCH',
             'data' => $data,
             'errors' => $errors
         ]);
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $default [optional] default: null
-     * @return array|mixed
-     */
-    private function consumeSessionData(string $key, $default = null) {
-        if(!empty($_SESSION[$key])) {
-            $data = $_SESSION[$key];
-            unset($_SESSION[$key]);
-            return $data;
-        }
-        return $default;
     }
 }
