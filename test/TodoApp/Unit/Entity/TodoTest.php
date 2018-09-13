@@ -15,16 +15,16 @@ class TodoTest extends TestCase
     {
         $name = 'Test name';
         $description = 'Description';
-        $status = 'complete';
         $dueAt = new DateTime();
+        $status = Todo::STATUS_INCOMPLETE;
         $id = 1;
 
-        $todo = new Todo($name, $description, $status, $dueAt, $id);
+        $todo = new Todo($name, $description, $dueAt, $status, $id);
 
         $this->assertEquals($name, $todo->getName());
         $this->assertEquals($description, $todo->getDescription());
-        $this->assertEquals($status, $todo->getStatus());
         $this->assertEquals($dueAt, $todo->getDueAt());
+        $this->assertEquals($status, $todo->getStatus());
         $this->assertEquals($id, $todo->getId());
     }
 
@@ -35,10 +35,9 @@ class TodoTest extends TestCase
     {
         $name = 'Test name';
         $description = 'Description';
-        $status = 'complete';
         $dueAt = new DateTime();
 
-        $todo = new Todo($name, $description, $status, $dueAt);
+        $todo = new Todo($name, $description, $dueAt);
 
         $this->assertNull($todo->getId());
     }
@@ -50,10 +49,9 @@ class TodoTest extends TestCase
     {
         $name = 'Test name';
         $description = 'Description';
-        $status = 'complete';
         $dueAt = new DateTime();
 
-        $todo = new Todo($name, $description, $status, $dueAt);
+        $todo = new Todo($name, $description, $dueAt);
 
         $this->assertEquals($dueAt->format('Y-m-d H:i:s'), $todo->getDueAtTimestamp());
     }
@@ -65,10 +63,10 @@ class TodoTest extends TestCase
     {
         $name = 'Test name';
         $description = 'Description';
-        $status = 'complete';
         $dueAt = new DateTime();
+        $status = Todo::STATUS_INCOMPLETE;
 
-        $todo = new Todo($name, $description, $status, $dueAt, 1);
+        $todo = new Todo($name, $description, $dueAt, $status, 1);
 
         $newTodo = $todo->withId(2);
         $this->assertEquals(1, $todo->getId());
@@ -83,14 +81,13 @@ class TodoTest extends TestCase
     {
         $name = 'Test name';
         $description = 'Description';
-        $status = 'incomplete';
         $dueAt = new DateTime();
 
-        $todo = new Todo($name, $description, $status, $dueAt);
+        $todo = new Todo($name, $description, $dueAt);
 
         $newTodo = $todo->withStatus('complete');
-        $this->assertEquals('incomplete', $todo->getStatus());
-        $this->assertEquals('complete', $newTodo->getStatus());
+        $this->assertEquals(Todo::STATUS_INCOMPLETE, $todo->getStatus());
+        $this->assertEquals(Todo::STATUS_COMPLETE, $newTodo->getStatus());
     }
 
 }

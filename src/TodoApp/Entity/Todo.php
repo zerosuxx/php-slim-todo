@@ -13,6 +13,16 @@ class Todo
     /**
      * @var string
      */
+    const STATUS_COMPLETE = 'complete';
+
+    /**
+     * @var string
+     */
+    const STATUS_INCOMPLETE = 'incomplete';
+
+    /**
+     * @var string
+     */
     private $name;
 
     /**
@@ -35,7 +45,7 @@ class Todo
      */
     private $id;
 
-    public function __construct(string $name, string $description, string $status, DateTime $dueAt, int $id = null)
+    public function __construct(string $name, string $description, DateTime $dueAt, string $status = self::STATUS_INCOMPLETE, int $id = null)
     {
         $this->name = $name;
         $this->description = $description;
