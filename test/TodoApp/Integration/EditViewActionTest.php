@@ -40,13 +40,13 @@ class EditViewActionTest extends TodoAppTestCase
 
         $storage = $this->getSession();
         $storage->set('errors', ['name' => 'Invalid data']);
-        $storage->set('data', ['description' => 'Test desc']);
+        $storage->set('formFields', ['description' => 'Test desc']);
 
         $response = $this->runApp('GET', '/todo/1');
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('Invalid data', (string)$response->getBody());
         $this->assertContains('Test desc', (string)$response->getBody());
         $this->assertFalse($storage->has('errors'));
-        $this->assertFalse($storage->has('data'));
+        $this->assertFalse($storage->has('formFields'));
     }
 }

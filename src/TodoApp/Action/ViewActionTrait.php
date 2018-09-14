@@ -8,11 +8,11 @@ use Zero\Storage\StorageInterface;
 trait ViewActionTrait
 {
     private function getTemplateVars(CSRFTokenValidator $csrf, StorageInterface $storage) {
-        $data = $storage->consume('data', []);
+        $formFields = $storage->pop('formFields', []);
         $data['token'] = $csrf->getToken();
         return [
-            'data' => $data,
-            'errors' => $storage->consume('errors', [])
+            'formFields' => $formFields,
+            'errors' => $storage->pop('errors', [])
         ];
     }
 }

@@ -52,7 +52,7 @@ class EditViewAction
             'description' => $todo->getDescription(),
             'due_at' => $todo->getDueAtTimestamp(),
         ];
-        $vars['data'] += $todoData;
+        $vars['formFields'] += $todoData;
         return $this->view->render($response, 'edit.html.twig', $vars);
     }
 }

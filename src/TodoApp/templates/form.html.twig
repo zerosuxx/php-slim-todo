@@ -8,9 +8,9 @@
         <input type="hidden" name="_METHOD" value="{{ method }}">
     {% endif %}
     <table>
-        <tr><td>Name</td><td><input type="text" name="name" value="{{ data.name }}"></td></tr>
-        <tr><td>Description</td><td><input type="text" name="description" value="{{ data.description }}"></td></tr>
-        <tr><td>Due At</td><td><input type="text" name="due_at" value="{{ data.due_at }}"></td></tr>
-        <tr><td colspan="2"><input type="hidden" name="_token" value="{{ data.token }}"><input type="submit" value="Save"></td></tr>
+        <tr><td>Name</td><td><input type="text" name="name" value="{{ formFields.name }}"></td></tr>
+        <tr><td>Description</td><td><input type="text" name="description" value="{{ formFields.description }}"></td></tr>
+        <tr><td>Due At</td><td><input type="text" name="due_at" value="{{ formFields.due_at }}"></td></tr>
+        <tr><td colspan="2"><input type="hidden" name="_token" value="{{ formFields.token }}"><input type="submit" value="Save"></td></tr>
     </table>
 </form>
