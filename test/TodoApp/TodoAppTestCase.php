@@ -58,9 +58,9 @@ class TodoAppTestCase extends AbstractSlimTestCase
         $this->mockService($container, 'session', new ArrayStorage());
     }
 
-    protected function getSession(): StorageInterface
+    protected function getSession($name = 'session'): StorageInterface
     {
-        return $this->getService('session');
+        return $this->getService($name);
     }
 
     protected function buildTodo(
