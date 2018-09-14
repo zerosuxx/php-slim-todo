@@ -49,4 +49,26 @@ class EditViewActionTest extends TodoAppTestCase
         $this->assertFalse($storage->has('errors'));
         $this->assertFalse($storage->has('formFields'));
     }
+
+    /**
+     * @test
+     */
+    public function callsEditPage_GivenOriginalSessionStorage_Returns200()
+    {
+        $session = $this->getService('original_session');
+        $container = $this->getApp()->getContainer();
+        $container['session'] = $session;
+        $this->todosDao->saveTodo($this->buildTodo('Test Name', 'Test message'));
+
+        $storage = $this->getSession();
+        $storage->set('errors', ['name' => 'Invalid data']);
+        $storage->set('formFields', ['description' => 'Test desc']);
+
+        $response = $this->runApp('GET', '/todo/1');
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains('Invalid data', (string)$response->getBody());
+        $this->assertContains('Test desc', (string)$response->getBody());
+        $this->assertFalse($storage->has('errors'));
+        $this->assertFalse($storage->has('formFields'));
+    }
 }
