@@ -1236,16 +1236,16 @@
         },
         {
             "name": "zer0php/storage",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zer0php/storage.git",
-                "reference": "cd0a019fdc13345bd5c0d7a57f66188280119d50"
+                "reference": "1f248836e4eef7baa702f011ac4e3e95b7f7c7a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zer0php/storage/zipball/cd0a019fdc13345bd5c0d7a57f66188280119d50",
-                "reference": "cd0a019fdc13345bd5c0d7a57f66188280119d50",
+                "url": "https://api.github.com/repos/zer0php/storage/zipball/1f248836e4eef7baa702f011ac4e3e95b7f7c7a6",
+                "reference": "1f248836e4eef7baa702f011ac4e3e95b7f7c7a6",
                 "shasum": ""
             },
             "require": {
@@ -1272,7 +1272,7 @@
                 }
             ],
             "description": "Store array data in Storage object",
-            "time": "2018-09-13T15:36:56+00:00"
+            "time": "2018-09-14T10:36:43+00:00"
         }
     ],
     "packages-dev": [
@@ -2024,20 +2024,23 @@
         },
         {
             "name": "phpunit/php-file-iterator",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "cecbc684605bb0cc288828eb5d65d93d5c676d3c"
+                "reference": "050bedf145a257b1ff02746c31894800e5122946"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/cecbc684605bb0cc288828eb5d65d93d5c676d3c",
-                "reference": "cecbc684605bb0cc288828eb5d65d93d5c676d3c",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/050bedf145a257b1ff02746c31894800e5122946",
+                "reference": "050bedf145a257b1ff02746c31894800e5122946",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.1"
             },
             "type": "library",
             "extra": {
@@ -2067,7 +2070,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2018-06-11T11:44:00+00:00"
+            "time": "2018-09-13T20:33:42+00:00"
         },
         {
             "name": "phpunit/php-text-template",
